@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build": "pnpm --filter ui build-storybook && cp -r packages/ui/storybook-static apps/web/public/storybook && pnpm --filter web build",
+    "build": "pnpm --filter ui build-storybook && cp -r /vercel/path0/packages/ui/storybook-static /vercel/path0/apps/web/public/storybook && pnpm --filter web build",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
