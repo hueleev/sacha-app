@@ -1,8 +1,12 @@
+"use client";
+import { useRouter } from "next/navigation";
 import { Button } from "@workspace/ui/components/button";
 
 export default function Page() {
+  const router = useRouter();
+
   const handleClick = () => {
-    window.location.href = "/storybook";
+    router.push("/storybook");
   };
   return (
     <div className="flex items-center justify-center min-h-svh">
