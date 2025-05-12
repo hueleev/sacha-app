@@ -4,8 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "cp -r ../../packages/ui/storybook-static ./public/storybook && next dev --turbopack",
-    "build": "next build",
+    "dev": "next dev --turbopack",
+    "build": "cp -r ../../packages/ui/storybook-static ./public/storybook && next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
