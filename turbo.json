@@ -7,7 +7,7 @@
     },
     "build": {
       "dependsOn": ["^build", "^build-storybook"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*", "$VERCEL_ENV$"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "lint": {
