@@ -37,6 +37,7 @@ export function LoginScreen() {
   const pillsRef = useRef<any[]>([]);
   const animationRef = useRef<number>();
   const [_, forceRerender] = useState(0); // 강제 리렌더링용
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -131,12 +132,16 @@ export function LoginScreen() {
           가족과 함께 건강을 지키세요
         </p>
         <Button
-          onClick={() => signIn("kakao", { callbackUrl: "/dashboard" })}
+          onClick={() => {
+            setIsLoggingIn(true);
+            signIn("kakao", { callbackUrl: "/dashboard" });
+          }}
           className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold text-lg px-8 py-3 rounded-full shadow-md flex items-center gap-2 transition-all duration-200"
           style={{ boxShadow: "0 4px 24px 0 rgba(255, 221, 51, 0.15)" }}
+          disabled={isLoggingIn}
         >
           <LogIn className="w-5 h-5 mr-1" />
-          카카오로 로그인
+          {isLoggingIn ? "로그인 중..." : "카카오로 로그인"}
         </Button>
       </div>
       <style jsx global>{`

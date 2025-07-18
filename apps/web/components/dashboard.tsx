@@ -21,6 +21,7 @@ import { Progress } from "@workspace/ui/components/progress";
 import { Clock, Plus, Check, LogOut } from "lucide-react";
 import { AddMedicationDialog } from "./add-medication-dialog";
 import { FamilyFeed } from "./family-feed";
+import { toast } from "sonner";
 
 interface Medication {
   id: string;
@@ -103,6 +104,7 @@ export function Dashboard() {
   ]);
 
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const takeMedication = (id: string) => {
     setMedications((prev) =>
@@ -140,6 +142,9 @@ export function Dashboard() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">복약 알림</h1>
+            <p className="text-gray-600">
+              {session?.user?.name}님, 안녕하세요!
+            </p>
           </div>
           <div className="flex items-center gap-4">
             <Button onClick={() => setIsAddDialogOpen(true)}>
@@ -148,15 +153,18 @@ export function Dashboard() {
             </Button>
             <Button
               variant="outline"
-              onClick={() => signOut({ callbackUrl: "/" })}
+              onClick={async () => {
+                setIsLoggingOut(true);
+                await signOut({ callbackUrl: "/" });
+                toast.success("로그아웃 되었습니다!");
+                setIsLoggingOut(false);
+              }}
+              disabled={isLoggingOut}
             >
               <LogOut className="w-4 h-4 mr-2" />
-              로그아웃
+              {isLoggingOut ? "로그아웃 중..." : "로그아웃"}
             </Button>
           </div>
-        </div>
-        <div>
-          <p className="text-gray-600">{session?.user?.name}님, 안녕하세요!</p>
         </div>
         {/* Progress Card */}
         <Card>

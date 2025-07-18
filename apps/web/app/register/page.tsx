@@ -13,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@workspace/ui/components/card";
+import { toast } from "sonner";
 
 export default function RegisterPage() {
   const { data: session, update } = useSession();
@@ -51,7 +52,7 @@ export default function RegisterPage() {
       if (response.ok) {
         // 세션 업데이트
         await update();
-        alert("사용자 정보가 성공적으로 등록되었습니다!");
+        toast.success("등록되었습니다!");
         router.push("/dashboard");
       } else {
         const error = await response.json();

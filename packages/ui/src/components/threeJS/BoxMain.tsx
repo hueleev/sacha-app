@@ -1,5 +1,3 @@
-"use client";
-
 import { Canvas } from "@react-three/fiber";
 import Box from "./Box";
 import { OrbitControls } from "@react-three/drei";
