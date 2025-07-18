@@ -35,7 +35,7 @@ function getRandomPillConfig() {
 export function LoginScreen() {
   const containerRef = useRef<HTMLDivElement>(null);
   const pillsRef = useRef<any[]>([]);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | null>(null);
   const [_, forceRerender] = useState(0); // 강제 리렌더링용
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
