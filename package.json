@@ -9,7 +9,12 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "dependencies": {
-    "next": "^15.2.3"
+    "@auth/drizzle-adapter": "^1.10.0",
+    "drizzle-kit": "^0.31.4",
+    "drizzle-orm": "^0.44.3",
+    "next": "^15.2.3",
+    "next-auth": "^4.24.11",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "@workspace/eslint-config": "workspace:*",

@@ -9,117 +9,127 @@ export default function Pikachu(props: ThreeElements["group"]) {
 
   return (
     <group ref={groupRef} {...props}>
-      {/* 몸통 (더 통통하게) */}
+      {/* 몸통 */}
       <mesh position={[0, -0.7, 0]}>
-        <sphereGeometry args={[1.25, 32, 32]} />
+        <sphereGeometry args={[1.15, 32, 32]} />
         <meshStandardMaterial color="#FFD800" />
       </mesh>
-      {/* 머리 (더 크고 동그랗게) */}
-      <mesh position={[0, 1.5, 0]}>
-        <sphereGeometry args={[1.5, 32, 32]} />
+      {/* 머리 */}
+      <mesh position={[0, 1.2, 0]}>
+        <sphereGeometry args={[1.35, 32, 32]} />
         <meshStandardMaterial color="#FFD800" />
       </mesh>
       {/* 왼쪽 귀 */}
-      <mesh position={[-0.8, 3.3, 0]} rotation={[0, 0, -0.15]}>
-        <cylinderGeometry args={[0.18, 0.22, 1.7, 16]} />
+      <mesh position={[-0.7, 2.8, 0]} rotation={[0, 0, -0.18]}>
+        <cylinderGeometry args={[0.15, 0.18, 1.3, 16]} />
         <meshStandardMaterial color="#FFD800" />
       </mesh>
       {/* 왼쪽 귀 끝 검정 */}
-      <mesh position={[-0.8, 4.1, 0]} rotation={[0, 0, -0.15]}>
-        <cylinderGeometry args={[0.18, 0.18, 0.5, 16]} />
+      <mesh position={[-0.7, 3.4, 0]} rotation={[0, 0, -0.18]}>
+        <cylinderGeometry args={[0.15, 0.15, 0.4, 16]} />
         <meshStandardMaterial color="#222" />
       </mesh>
       {/* 오른쪽 귀 */}
-      <mesh position={[0.8, 3.3, 0]} rotation={[0, 0, 0.15]}>
-        <cylinderGeometry args={[0.18, 0.22, 1.7, 16]} />
+      <mesh position={[0.7, 2.8, 0]} rotation={[0, 0, 0.18]}>
+        <cylinderGeometry args={[0.15, 0.18, 1.3, 16]} />
         <meshStandardMaterial color="#FFD800" />
       </mesh>
       {/* 오른쪽 귀 끝 검정 */}
-      <mesh position={[0.8, 4.1, 0]} rotation={[0, 0, 0.15]}>
-        <cylinderGeometry args={[0.18, 0.18, 0.5, 16]} />
+      <mesh position={[0.7, 3.4, 0]} rotation={[0, 0, 0.18]}>
+        <cylinderGeometry args={[0.15, 0.15, 0.4, 16]} />
         <meshStandardMaterial color="#222" />
       </mesh>
       {/* 왼쪽 볼 */}
-      <mesh position={[-0.85, 1.1, 1.15]}>
-        <sphereGeometry args={[0.32, 16, 16]} />
+      <mesh position={[-0.7, 0.8, 1.1]}>
+        <sphereGeometry args={[0.28, 16, 16]} />
         <meshStandardMaterial color="#E94F37" />
       </mesh>
       {/* 오른쪽 볼 */}
-      <mesh position={[0.85, 1.1, 1.15]}>
-        <sphereGeometry args={[0.32, 16, 16]} />
+      <mesh position={[0.7, 0.8, 1.1]}>
+        <sphereGeometry args={[0.28, 16, 16]} />
         <meshStandardMaterial color="#E94F37" />
       </mesh>
       {/* 왼쪽 눈 */}
-      <mesh position={[-0.55, 1.7, 1.35]}>
-        <sphereGeometry args={[0.18, 16, 16]} />
+      <mesh position={[-0.45, 1.4, 1.2]}>
+        <sphereGeometry args={[0.16, 16, 16]} />
         <meshStandardMaterial color="#222" />
       </mesh>
       {/* 왼쪽 눈 하이라이트 */}
-      <mesh position={[-0.5, 1.8, 1.5]}>
-        <sphereGeometry args={[0.05, 8, 8]} />
+      <mesh position={[-0.4, 1.5, 1.3]}>
+        <sphereGeometry args={[0.045, 8, 8]} />
         <meshStandardMaterial color="#fff" />
       </mesh>
       {/* 오른쪽 눈 */}
-      <mesh position={[0.55, 1.7, 1.35]}>
-        <sphereGeometry args={[0.18, 16, 16]} />
+      <mesh position={[0.45, 1.4, 1.2]}>
+        <sphereGeometry args={[0.16, 16, 16]} />
         <meshStandardMaterial color="#222" />
       </mesh>
       {/* 오른쪽 눈 하이라이트 */}
-      <mesh position={[0.6, 1.8, 1.5]}>
-        <sphereGeometry args={[0.05, 8, 8]} />
+      <mesh position={[0.5, 1.5, 1.3]}>
+        <sphereGeometry args={[0.045, 8, 8]} />
         <meshStandardMaterial color="#fff" />
       </mesh>
       {/* 코 */}
-      <mesh position={[0, 1.35, 1.5]}>
-        <sphereGeometry args={[0.06, 8, 8]} />
+      <mesh position={[0, 1.1, 1.3]}>
+        <sphereGeometry args={[0.05, 8, 8]} />
         <meshStandardMaterial color="#222" />
       </mesh>
-      {/* 입 (작은 반원 두 개로 입 표현) */}
-      <mesh position={[-0.13, 1.13, 1.45]} rotation={[0, 0, 0.5]}>
-        <torusGeometry args={[0.11, 0.025, 8, 16, Math.PI / 1.2]} />
+      {/* 입 */}
+      <mesh position={[-0.09, 0.95, 1.25]} rotation={[0, 0, 0.5]}>
+        <torusGeometry args={[0.08, 0.018, 8, 16, Math.PI / 1.2]} />
         <meshStandardMaterial color="#222" />
       </mesh>
-      <mesh position={[0.13, 1.13, 1.45]} rotation={[0, 0, -0.5]}>
-        <torusGeometry args={[0.11, 0.025, 8, 16, Math.PI / 1.2]} />
+      <mesh position={[0.09, 0.95, 1.25]} rotation={[0, 0, -0.5]}>
+        <torusGeometry args={[0.08, 0.018, 8, 16, Math.PI / 1.2]} />
         <meshStandardMaterial color="#222" />
       </mesh>
-      {/* 왼쪽 팔 */}
-      <mesh position={[-1.1, 0.3, 0.5]} rotation={[0, 0, 0.7]}>
-        <cylinderGeometry args={[0.18, 0.22, 0.9, 16]} />
+      {/* 왼쪽 팔(노트북 위에 올린 포즈) */}
+      <mesh position={[-0.7, -0.1, 0.8]} rotation={[0.2, 0, 0.7]}>
+        <cylinderGeometry args={[0.13, 0.16, 0.7, 16]} />
         <meshStandardMaterial color="#FFD800" />
       </mesh>
-      {/* 오른쪽 팔 */}
-      <mesh position={[1.1, 0.3, 0.5]} rotation={[0, 0, -0.7]}>
-        <cylinderGeometry args={[0.18, 0.22, 0.9, 16]} />
+      {/* 오른쪽 팔(노트북 위에 올린 포즈) */}
+      <mesh position={[0.7, -0.1, 0.8]} rotation={[0.2, 0, -0.7]}>
+        <cylinderGeometry args={[0.13, 0.16, 0.7, 16]} />
         <meshStandardMaterial color="#FFD800" />
       </mesh>
       {/* 왼쪽 다리 */}
-      <mesh position={[-0.5, -1.7, 0.4]}>
-        <sphereGeometry args={[0.32, 16, 16]} />
+      <mesh position={[-0.4, -1.5, 0.4]}>
+        <sphereGeometry args={[0.28, 16, 16]} />
         <meshStandardMaterial color="#FFD800" />
       </mesh>
       {/* 오른쪽 다리 */}
-      <mesh position={[0.5, -1.7, 0.4]}>
-        <sphereGeometry args={[0.32, 16, 16]} />
+      <mesh position={[0.4, -1.5, 0.4]}>
+        <sphereGeometry args={[0.28, 16, 16]} />
         <meshStandardMaterial color="#FFD800" />
       </mesh>
-      {/* 꼬리(번개 모양, 노란색) */}
-      <mesh position={[1.5, 0.7, -0.7]} rotation={[0, 0, -0.3]}>
-        <boxGeometry args={[0.3, 1.1, 0.18]} />
+      {/* 꼬리(번개 모양) */}
+      <mesh position={[1.3, 0.5, -0.7]} rotation={[0, 0, -0.3]}>
+        <boxGeometry args={[0.22, 0.8, 0.13]} />
         <meshStandardMaterial color="#FFD800" />
       </mesh>
-      <mesh position={[2, 1.3, -0.7]} rotation={[0, 0, 0.2]}>
-        <boxGeometry args={[0.3, 0.7, 0.18]} />
+      <mesh position={[1.7, 1.0, -0.7]} rotation={[0, 0, 0.2]}>
+        <boxGeometry args={[0.22, 0.5, 0.13]} />
         <meshStandardMaterial color="#FFD800" />
       </mesh>
-      <mesh position={[2.3, 1.7, -0.7]} rotation={[0, 0, 0.1]}>
-        <boxGeometry args={[0.3, 0.4, 0.18]} />
+      <mesh position={[1.95, 1.3, -0.7]} rotation={[0, 0, 0.1]}>
+        <boxGeometry args={[0.22, 0.28, 0.13]} />
         <meshStandardMaterial color="#FFD800" />
       </mesh>
       {/* 꼬리 끝 갈색 */}
-      <mesh position={[2.5, 2, -0.7]}>
-        <boxGeometry args={[0.3, 0.25, 0.18]} />
+      <mesh position={[2.1, 1.5, -0.7]}>
+        <boxGeometry args={[0.22, 0.15, 0.13]} />
         <meshStandardMaterial color="#8B6F1A" />
+      </mesh>
+      {/* 노트북 (간단한 box) */}
+      <mesh position={[0, -0.5, 1.2]} rotation={[-0.7, 0, 0]}>
+        <boxGeometry args={[1.2, 0.08, 0.8]} />
+        <meshStandardMaterial color="#d9d9d9" />
+      </mesh>
+      {/* 노트북 화면 */}
+      <mesh position={[0, -0.1, 1.55]} rotation={[-1.2, 0, 0]}>
+        <boxGeometry args={[1.2, 0.05, 0.7]} />
+        <meshStandardMaterial color="#bdbdbd" />
       </mesh>
     </group>
   );

@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ["@workspace/ui"],
+  images: {
+    domains: ["k.kakaocdn.net"],
+  },
   async redirects() {
     return [
       {
