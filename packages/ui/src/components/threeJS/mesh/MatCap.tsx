@@ -22,6 +22,14 @@ function MatCapMesh(props: MatCapMeshProps) {
     }
   }, [props.flatShading]);
 
+  useEffect(() => {
+    if (mapcap) {
+      mapcap.colorSpace = THREE.SRGBColorSpace;
+      mapcap.flipY = false;
+      mapcap.needsUpdate = true;
+    }
+  }, [mapcap]);
+
   return (
     <mesh ref={meshRef} position={[0, 0, 2]}>
       <torusKnotGeometry args={[0.5, 0.15, 256, 128]} />
