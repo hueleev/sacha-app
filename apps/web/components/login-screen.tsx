@@ -3,7 +3,7 @@
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { Button } from "@workspace/ui/components/button";
-import { LogIn } from "lucide-react";
+import { LogIn, BookOpen } from "lucide-react";
 
 import loginImage from "@workspace/ui/assets/image/yak-alarm.png";
 import heartPillImg from "@workspace/ui/assets/image/heartPill_2.png";
@@ -142,6 +142,17 @@ export function LoginScreen() {
         >
           <LogIn className="w-5 h-5 mr-1" />
           {isLoggingIn ? "로그인 중..." : "카카오로 로그인"}
+        </Button>
+
+        {/* 스토리북 버튼 */}
+        <Button
+          onClick={() => window.open("/storybook", "_blank")}
+          variant="outline"
+          size="sm"
+          className="mt-4 text-gray-600 hover:text-gray-800 border-gray-300 hover:border-gray-400 transition-all duration-200"
+        >
+          <BookOpen className="w-4 h-4 mr-2" />
+          스토리북 보기
         </Button>
       </div>
       <style jsx global>{`
