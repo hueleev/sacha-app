@@ -20,7 +20,7 @@ export default {
   component: Refraction,
   tags: ["autodocs"],
   parameters: {
-    docs: {
+      docs: {
       description: {
         component: description,
       },
