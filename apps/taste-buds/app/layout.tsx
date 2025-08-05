@@ -7,6 +7,10 @@ export const metadata: Metadata = {
   title: 'taste-buds',
   description: 'taste-buds',
   generator: 'sacha',
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
 }
 
 export default function RootLayout({
@@ -24,6 +28,8 @@ html {
   --font-mono: ${GeistMono.variable};
 }
         `}</style>
+          <link rel="icon" href="/icon.png" />
+          <link rel="apple-touch-icon" href="/icon.png" />
       </head>
       <body>{children}</body>
     </html>
