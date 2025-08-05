@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build": "pnpm --filter ui build-storybook && pnpm --filter taste-buds build",
+    "build": "pnpm --filter ui build-storybook && pnpm --filter web build",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
