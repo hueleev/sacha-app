@@ -2,7 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import { Button } from "@workspace/ui/components/button";
+import { Button } from "@workspace/ui/components/web/button";
 import { LogIn, BookOpen } from "lucide-react";
 
 import loginImage from "@workspace/ui/assets/image/yak-alarm.png";

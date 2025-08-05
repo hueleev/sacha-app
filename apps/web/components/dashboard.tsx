@@ -8,16 +8,16 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@workspace/ui/components/card";
-import { Button } from "@workspace/ui/components/button";
-import { Badge } from "@workspace/ui/components/badge";
+} from "@workspace/ui/components/web/card";
+import { Button } from "@workspace/ui/components/web/button";
+import { Badge } from "@workspace/ui/components/web/badge";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@workspace/ui/components/tabs";
-import { Progress } from "@workspace/ui/components/progress";
+} from "@workspace/ui/components/web/tabs";
+import { Progress } from "@workspace/ui/components/web/progress";
 import { Clock, Plus, Check, LogOut } from "lucide-react";
 import { AddMedicationDialog } from "./add-medication-dialog";
 import { FamilyFeed } from "./family-feed";

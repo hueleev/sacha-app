@@ -10,11 +10,11 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@workspace/ui/components/dialog"
-import { Button } from "@workspace/ui/components/button"
-import { Input } from "@workspace/ui/components/input"
-import { Label } from "@workspace/ui/components/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/select"
+} from "@workspace/ui/components/web/dialog"
+import { Button } from "@workspace/ui/components/web/button"
+import { Input } from "@workspace/ui/components/web/input"
+import { Label } from "@workspace/ui/components/web/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/web/select"
 
 interface Medication {
   name: string
@@ -68,7 +68,7 @@ export function AddMedicationDialog({ open, onOpenChange, onAddMedication }: Add
             <Input
               id="name"
               value={formData.name}
-              onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
+              onChange={(e: any) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
               placeholder="예: 혈압약, 비타민D"
               required
             />
@@ -78,7 +78,7 @@ export function AddMedicationDialog({ open, onOpenChange, onAddMedication }: Add
             <Input
               id="dosage"
               value={formData.dosage}
-              onChange={(e) => setFormData((prev) => ({ ...prev, dosage: e.target.value }))}
+              onChange={(e: any) => setFormData((prev) => ({ ...prev, dosage: e.target.value }))}
               placeholder="예: 1정, 2캡슐"
               required
             />
@@ -89,7 +89,7 @@ export function AddMedicationDialog({ open, onOpenChange, onAddMedication }: Add
               id="time"
               type="time"
               value={formData.time}
-              onChange={(e) => setFormData((prev) => ({ ...prev, time: e.target.value }))}
+              onChange={(e: any) => setFormData((prev) => ({ ...prev, time: e.target.value }))}
               required
             />
           </div>
@@ -97,7 +97,7 @@ export function AddMedicationDialog({ open, onOpenChange, onAddMedication }: Add
             <Label htmlFor="color">색상</Label>
             <Select
               value={formData.color}
-              onValueChange={(value) => setFormData((prev) => ({ ...prev, color: value }))}
+              onValueChange={(value: any) => setFormData((prev) => ({ ...prev, color: value }))}
             >
               <SelectTrigger>
                 <SelectValue />
