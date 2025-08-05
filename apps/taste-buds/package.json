@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build-taste": "mkdir -p ./public/storybook && cp -r ../../packages/ui/storybook-static/* ./public/storybook && next build",
+    "build": "mkdir -p ./public/storybook && cp -r ../../packages/ui/storybook-static/* ./public/storybook && next build",
     "lint": "next lint",
     "start": "next start",
     "lint:fix": "next lint --fix",
