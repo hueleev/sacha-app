@@ -19,7 +19,7 @@ export const metadata = {
   description: "가족과 함께 건강을 지키세요",
   icons: {
     icon: "/icon.png",
-    apple: "/apple-touch-icon.png",
+    apple: "/icon.png",
   },
 };
 
@@ -32,7 +32,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/icon.png" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" href="/icon.png" />
       </head>
       <body
         className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}
