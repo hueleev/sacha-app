@@ -50,6 +50,11 @@ export default {
             control: 'boolean',
             description: 'Point Light를 켜고 끕니다',
             defaultValue: false
+        },
+        spotLight: {
+            control: 'boolean',
+            description: 'Spot Light를 켜고 끕니다',
+            defaultValue: false
         }
     }
 }
@@ -78,5 +83,12 @@ export const PointLight = {
     args: {
         ambientLight: false,
         pointLight: true,
+    }
+}
+
+export const SpotLight = {
+    args: {
+        ambientLight: false,
+        spotLight: true,
     }
 }

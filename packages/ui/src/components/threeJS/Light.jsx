@@ -149,6 +149,12 @@ function PointLight({light}) {
     return <pointLight ref={light} color="#ffffff" intensity={200} position={[0, 5, 0]} distance={0} />;
 }
 
+function SpotLight({light}) {
+    useHelper(light, THREE.SpotLightHelper);
+    return <spotLight ref={light} color="#ffffff" intensity={200} position={[0, 5, 0]}
+    target-position={[0,0,0]} distance={0} angle={THREE.MathUtils.degToRad(30)} penumbra={0.2}/>;
+}
+
 /**
  * 메인 Light 컴포넌트
  * 다양한 Three.js 조명 타입을 시연하는 3D 장면을 렌더링합니다.
@@ -160,7 +166,7 @@ function PointLight({light}) {
  * @param {boolean} props.directionalLight - 방향광 활성화 여부 (기본값: false)
  * @param {boolean} props.pointLight - 점광원 활성화 여부 (기본값: false)
  */
-function Light ({ambientLight = true, hemisphereLight = false, directionalLight = false, pointLight = false}) {
+function Light ({ambientLight = true, hemisphereLight = false, directionalLight = false, pointLight = false, spotLight= false}) {
     // 광원에 대한 참조를 생성하여 MeshObject와 광원 컴포넌트 간에 공유
     const light = useRef();
     
@@ -178,7 +184,7 @@ function Light ({ambientLight = true, hemisphereLight = false, directionalLight 
                     {hemisphereLight && <HemisphereLight/>}
                     {directionalLight && <DirectionalLight light={light}/>}
                     {pointLight && <PointLight light={light}/>}
-                    
+                    {spotLight && <SpotLight light={light}/>}
                     {/* 3D 객체들을 렌더링 */}
                     <MeshObject light={light} />
                 </Canvas>
