@@ -20,9 +20,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-white">
-      {!isLoggedIn ? <MainApp user={{
-        name:'hi'
-      }} onLogout={handleLogout} /> : <Auth onLogin={handleLogin} />}
+      {isLoggedIn ? <MainApp user={user} onLogout={handleLogout} /> : <Auth onLogin={handleLogin} />}
     </div>
   )
 }
