@@ -19,7 +19,7 @@
     },
     "build-taste": {
       "dependsOn": ["^build", "^build-storybook"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*", "../../packages/ui/storybook-static/**"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "lint": {
