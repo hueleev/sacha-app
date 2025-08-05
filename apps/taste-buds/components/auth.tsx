@@ -21,12 +21,6 @@ export default function Auth({ onLogin }: AuthProps) {
     onLogin({ email, name: email.split("@")[0] })
   }
 
-  const handleViewStorybook = () => {
-    alert("스토리북 페이지로 이동합니다! (현재는 더미 기능입니다)")
-    // 실제 스토리북 링크로 이동하는 로직을 여기에 추가할 수 있습니다.
-    // window.open("YOUR_STORYBOOK_URL", "_blank");
-  }
-
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-white">
       <div className="w-full max-w-md border border-black bg-white">
@@ -80,7 +74,7 @@ export default function Auth({ onLogin }: AuthProps) {
             </Button>
           </form>
           <Button
-            onClick={handleViewStorybook}
+            onClick={() => window.open("/storybook", "_blank")}
             className="w-full border border-black rounded-none bg-white hover:bg-gray-100 text-black font-medium h-10 mt-2 flex items-center justify-center gap-2"
           >
             <BookOpen className="w-4 h-4" /> {/* BookOpen 아이콘 추가 */}
