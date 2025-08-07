@@ -152,7 +152,7 @@ function PointLight({light}) {
 function SpotLight({light}) {
     useHelper(light, THREE.SpotLightHelper);
     return <spotLight ref={light} color="#ffffff" intensity={200} position={[0, 5, 0]}
-    target-position={[0,0,0]} distance={0} angle={THREE.MathUtils.degToRad(30)} penumbra={0.2}/>;
+    target-position={[0,0,0]} distance={0} angle={THREE.MathUtils.degToRad(50)} penumbra={0.2}/>;
 }
 
 /**
