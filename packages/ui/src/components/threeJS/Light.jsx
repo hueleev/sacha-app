@@ -168,6 +168,13 @@ function PointLight({ light }) {
     );
 }
 
+/**
+ * 스포트라이트(Spot Light) 컴포넌트
+ * 원뿔 모양으로 빛을 방출하는 광원으로, 특정 영역을 집중적으로 비춥니다.
+ * 위치, 방향, 각도, 그리고 페넘브라(빛의 가장자리 부드러움)를 조절할 수 있습니다.
+ *
+ * @param {Object} light - 광원에 대한 참조 객체
+ */
 function SpotLight({ light }) {
     useHelper(light, THREE.SpotLightHelper);
     return (
@@ -184,6 +191,13 @@ function SpotLight({ light }) {
     );
 }
 
+/**
+ * 사각형 영역 조명(RectArea Light) 컴포넌트
+ * 사각형 모양의 면에서 빛을 방출하는 광원으로, 형광등이나 창문에서 들어오는 빛과 유사합니다.
+ * 너비, 높이, 위치, 회전 등을 조절하여 다양한 조명 효과를 만들 수 있습니다.
+ *
+ * @param {Object} light - 광원에 대한 참조 객체
+ */
 function RectAreaLight({ light }) {
     useHelper(light, RectAreaLightHelper);
     return (
@@ -199,6 +213,13 @@ function RectAreaLight({ light }) {
     );
 }
 
+/**
+ * 환경 조명(Environment Light) 컴포넌트
+ * HDR 이미지를 사용하여 장면에 환경 조명과 배경을 제공합니다.
+ * 실제 세계의 조명 환경을 시뮬레이션하여 자연스러운 조명과 반사 효과를 만듭니다.
+ * 
+ * @param {Object} light - 광원에 대한 참조 객체
+ */
 function EnvironmentLight({ light }) {
     return (
         <Environment blur={0} files={'/src/assets/threeJS/rogland_clear_night_4k.hdr'} background />
@@ -215,6 +236,9 @@ function EnvironmentLight({ light }) {
  * @param {boolean} props.hemisphereLight - 반구광 활성화 여부 (기본값: false)
  * @param {boolean} props.directionalLight - 방향광 활성화 여부 (기본값: false)
  * @param {boolean} props.pointLight - 점광원 활성화 여부 (기본값: false)
+ * @param {boolean} props.spotLight - 스포트라이트 활성화 여부 (기본값: false)
+ * @param {boolean} props.rectAreaLight - 사각형 영역 조명 활성화 여부 (기본값: false)
+ * @param {boolean} props.environmentLight - 환경 조명 활성화 여부 (기본값: false)
  */
 function Light({
     ambientLight = true,
