@@ -3,16 +3,16 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Button } from "@workspace/ui/components/web/button";
-import { Input } from "@workspace/ui/components/web/input";
-import { Label } from "@workspace/ui/components/web/label";
+import { Button } from "@workspace/ui/components/shadcn/button";
+import { Input } from "@workspace/ui/components/shadcn/input";
+import { Label } from "@workspace/ui/components/shadcn/label";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@workspace/ui/components/web/card";
+} from "@workspace/ui/components/shadcn/card";
 import { toast } from "sonner";
 
 export default function RegisterPage() {

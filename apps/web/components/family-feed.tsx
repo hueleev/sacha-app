@@ -3,9 +3,9 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Card, CardContent } from "@workspace/ui/components/web/card"
-import { Button } from "@workspace/ui/components/web/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/web/avatar"
+import { Card, CardContent } from "@workspace/ui/components/shadcn/card"
+import { Button } from "@workspace/ui/components/shadcn/button"
+import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/shadcn/avatar"
 import { Heart, MessageCircle, Users } from "lucide-react"
 
 interface FeedItem {

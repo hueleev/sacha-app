@@ -1,10 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@workspace/ui/components/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/components/tabs"
-import { Avatar, AvatarFallback } from "@workspace/ui/components/avatar"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/select"
+import { Button } from "@workspace/ui/components/shadcn/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/components/shadcn/tabs"
+import { Avatar, AvatarFallback } from "@workspace/ui/components/shadcn/avatar"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/shadcn/select"
 import { Plus, Star, Film, Book, Headphones, Camera, User, Heart, Bookmark, HelpCircle, X } from "lucide-react"
 import AddTaste from "./add-taste"
 

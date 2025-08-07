@@ -3,8 +3,8 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Button } from "@workspace/ui/components/button"
-import { Input } from "@workspace/ui/components/input"
+import { Button } from "@workspace/ui/components/shadcn/button"
+import { Input } from "@workspace/ui/components/shadcn/input"
 import { PenTool, Book, Headphones, Film, BookOpen } from "lucide-react" // BookOpen 추가
 
 interface AuthProps {
