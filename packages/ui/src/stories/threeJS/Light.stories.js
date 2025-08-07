@@ -1,5 +1,5 @@
-import Light  from '../../components/threeJS/Light.jsx'
-import LightCode from '../../components/threeJS/Light.jsx?raw'
+import Light from '../../components/threeJS/Light.jsx';
+import LightCode from '../../components/threeJS/Light.jsx?raw';
 
 const description = `
 Three.js 조명 컴포넌트입니다.
@@ -14,7 +14,9 @@ Three.js 조명 컴포넌트입니다.
 
 - Point Light: 전구와 같이 한 지점에서 모든 방향으로 빛을 방출합니다. 거리에 따라 빛의 강도가 감소합니다. 장면에서 작은 빨간 구체가 회전하면 조명이 이를 따라갑니다.
 
-각 조명 유형은 컨트롤을 통해 개별적으로 켜고 끌 수 있습니다.`
+- Drei : https://polyhaven.com/ 사용
+
+각 조명 유형은 컨트롤을 통해 개별적으로 켜고 끌 수 있습니다.`;
 
 export default {
     title: 'threeJS/Light',
@@ -34,61 +36,85 @@ export default {
         ambientLight: {
             control: 'boolean',
             description: 'Ambient Light를 켜고 끕니다',
-            defaultValue: true
+            defaultValue: true,
         },
         hemisphereLight: {
             control: 'boolean',
             description: 'Hemisphere Light를 켜고 끕니다',
-            defaultValue: false
+            defaultValue: false,
         },
         directionalLight: {
             control: 'boolean',
             description: 'Directional Light를 켜고 끕니다',
-            defaultValue: false
+            defaultValue: false,
         },
         pointLight: {
             control: 'boolean',
             description: 'Point Light를 켜고 끕니다',
-            defaultValue: false
+            defaultValue: false,
         },
         spotLight: {
             control: 'boolean',
             description: 'Spot Light를 켜고 끕니다',
-            defaultValue: false
-        }
-    }
-}
+            defaultValue: false,
+        },
+        rectAreaLight: {
+            control: 'boolean',
+            description: 'RectAreaLight를 켜고 끕니다',
+            defaultValue: false,
+        },
+        environmentLight: {
+            control: 'boolean',
+            description: 'Environment Light를 켜고 끕니다',
+            defaultValue: false,
+        },
+    },
+};
 
 export const AmbientLight = {
     args: {
         ambientLight: true,
-    }
-}
+    },
+};
 
 export const HemisphereLight = {
     args: {
         ambientLight: false,
         hemisphereLight: true,
-    }
-}
+    },
+};
 
 export const DirectionalLight = {
     args: {
         ambientLight: false,
         directionalLight: true,
-    }
-}
+    },
+};
 
 export const PointLight = {
     args: {
         ambientLight: false,
         pointLight: true,
-    }
-}
+    },
+};
 
 export const SpotLight = {
     args: {
         ambientLight: false,
         spotLight: true,
-    }
-}
+    },
+};
+
+export const RectAreaLight = {
+    args: {
+        ambientLight: false,
+        rectAreaLight: true,
+    },
+};
+
+export const EnvironmentLight = {
+    args: {
+        ambientLight: false,
+        environmentLight: true,
+    },
+};
