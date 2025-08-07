@@ -15,7 +15,7 @@
     "lib": "@/lib",
     "hooks": "@workspace/ui/hooks",
     "utils": "@workspace/ui/lib/utils",
-    "ui": "@workspace/ui/components"
+    "ui": "@workspace/ui/components/shadcn"
   },
   "iconLibrary": "lucide"
 }

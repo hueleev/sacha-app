@@ -10,11 +10,11 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@workspace/ui/components/web/dialog"
-import { Button } from "@workspace/ui/components/web/button"
-import { Input } from "@workspace/ui/components/web/input"
-import { Label } from "@workspace/ui/components/web/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/web/select"
+} from "@workspace/ui/components/shadcn/dialog"
+import { Button } from "@workspace/ui/components/shadcn/button"
+import { Input } from "@workspace/ui/components/shadcn/input"
+import { Label } from "@workspace/ui/components/shadcn/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/shadcn/select"
 
 interface Medication {
   name: string

@@ -8,16 +8,16 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@workspace/ui/components/web/card";
-import { Button } from "@workspace/ui/components/web/button";
-import { Badge } from "@workspace/ui/components/web/badge";
+} from "@workspace/ui/components/shadcn/card";
+import { Button } from "@workspace/ui/components/shadcn/button";
+import { Badge } from "@workspace/ui/components/shadcn/badge";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@workspace/ui/components/web/tabs";
-import { Progress } from "@workspace/ui/components/web/progress";
+} from "@workspace/ui/components/shadcn/tabs";
+import { Progress } from "@workspace/ui/components/shadcn/progress";
 import { Clock, Plus, Check, LogOut } from "lucide-react";
 import { AddMedicationDialog } from "./add-medication-dialog";
 import { FamilyFeed } from "./family-feed";

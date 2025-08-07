@@ -1,6 +1,6 @@
 "use client"
 
-import { useToast } from "@workspace/ui/hooks/use-toast"
+import { useToast } from "@workspace/ui/hooks/useToast"
 import {
   Toast,
   ToastClose,
@@ -8,7 +8,7 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "@workspace/ui/components/toast"
+} from "@workspace/ui/components/shadcn/toast"
 
 export function Toaster() {
   const { toasts } = useToast()
