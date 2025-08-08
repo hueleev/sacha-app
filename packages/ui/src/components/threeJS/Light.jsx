@@ -217,13 +217,11 @@ function RectAreaLight({ light }) {
  * 환경 조명(Environment Light) 컴포넌트
  * HDR 이미지를 사용하여 장면에 환경 조명과 배경을 제공합니다.
  * 실제 세계의 조명 환경을 시뮬레이션하여 자연스러운 조명과 반사 효과를 만듭니다.
- * 
+ *
  * @param {Object} light - 광원에 대한 참조 객체
  */
 function EnvironmentLight({ light }) {
-    return (
-        <Environment blur={0} files={'/src/assets/threeJS/rogland_clear_night_4k.hdr'} background />
-    );
+    return <Environment blur={0} files={'/assets/threeJS/rogland_clear_night_4k.hdr'} background />;
 }
 
 /**
