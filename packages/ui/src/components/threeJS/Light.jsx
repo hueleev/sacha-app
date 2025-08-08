@@ -15,6 +15,8 @@ import * as THREE from 'three';
 import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
 import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper';
 
+//import envFile from '/public/assets/threeJS/rogland_clear_night_4k.hdr';
+
 // 도넛 모양의 기하학적 객체 정의 (반지름 0.4, 튜브 반지름 0.1, 분할 수 32x32)
 const torusGeometry = new THREE.TorusGeometry(0.4, 0.1, 32, 32);
 // 도넛 객체의 재질 정의 (보라색, 중간 정도의 거칠기, 높은 금속성)
@@ -221,7 +223,13 @@ function RectAreaLight({ light }) {
  * @param {Object} light - 광원에 대한 참조 객체
  */
 function EnvironmentLight({ light }) {
-    return <Environment blur={0} files={'/assets/threeJS/rogland_clear_night_4k.hdr'} background />;
+    const url = window.location.href;
+    const isPublic = url.includes('https');
+    const prefix = isPublic ? '/public/storybook/assets' : '/public/assets';
+
+    return (
+        <Environment blur={0} files={prefix + '/threeJS/rogland_clear_night_4k.hdr'} background />
+    );
 }
 
 /**
