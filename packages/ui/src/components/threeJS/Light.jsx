@@ -15,7 +15,7 @@ import * as THREE from 'three';
 import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
 import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper';
 
-//import envFile from '/public/assets/threeJS/rogland_clear_night_4k.hdr';
+import envFile from '/public/assets/threeJS/rogland_clear_night_4k.hdr';
 
 // 도넛 모양의 기하학적 객체 정의 (반지름 0.4, 튜브 반지름 0.1, 분할 수 32x32)
 const torusGeometry = new THREE.TorusGeometry(0.4, 0.1, 32, 32);
@@ -34,7 +34,7 @@ RectAreaLightUniformsLib.init();
  *
  * @param {Object} light - 광원에 대한 참조 객체
  */
-function MeshObject({ light }) {
+export function MeshObject({ light }) {
     const { scene } = useThree();
 
     // light 타겟을 씬에 추가하고, 컴포넌트 언마운트 시 제거
@@ -200,7 +200,7 @@ function SpotLight({ light }) {
  *
  * @param {Object} light - 광원에 대한 참조 객체
  */
-function RectAreaLight({ light }) {
+export function RectAreaLight({ light }) {
     useHelper(light, RectAreaLightHelper);
     return (
         <rectAreaLight
@@ -223,13 +223,7 @@ function RectAreaLight({ light }) {
  * @param {Object} light - 광원에 대한 참조 객체
  */
 function EnvironmentLight({ light }) {
-    const url = window.location.href;
-    const isPublic = url.includes('https');
-    const prefix = isPublic ? '/public/storybook/assets' : '/public/assets';
-
-    return (
-        <Environment blur={0} files={prefix + '/threeJS/rogland_clear_night_4k.hdr'} background />
-    );
+    return <Environment blur={0} files={envFile} background />;
 }
 
 /**
