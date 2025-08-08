@@ -1,17 +1,17 @@
-import {Canvas} from "@react-three/fiber";
-import Main from "../Main";
-import {OrbitControls, useTexture} from "@react-three/drei";
-import * as THREE from "three";
-import {useEffect, useRef} from "react";
-import {Mesh} from "three";
+import { Canvas } from '@react-three/fiber';
+import Main from '../Main';
+import { OrbitControls, useTexture } from '@react-three/drei';
+import * as THREE from 'three';
+import { useEffect, useRef } from 'react';
+import { Mesh } from 'three';
 
-import baseImage from "../../../assets/threeJS/glass/Glass_Window_002_basecolor.jpg";
-import roughnessImage from "../../../assets/threeJS/glass/Glass_Window_002_roughness.jpg";
-import metalicImage from "../../../assets/threeJS/glass/Glass_Window_002_metallic.jpg";
-import normalImage from "../../../assets/threeJS/glass/Glass_Window_002_normal.jpg"
-import heightImage from "../../../assets/threeJS/glass/Glass_Window_002_height.png";
-import ambientImage from "../../../assets/threeJS/glass/Glass_Window_002_ambientOcclusion.jpg";
-import opacityImage from "../../../assets/threeJS/glass/Glass_Window_002_opacity.jpg";
+import baseImage from '/public/assets/threeJS/glass/Glass_Window_002_basecolor.jpg';
+import roughnessImage from '/public/assets/threeJS/glass/Glass_Window_002_roughness.jpg';
+import metalicImage from '/public/assets/threeJS/glass/Glass_Window_002_metallic.jpg';
+import normalImage from '/public/assets/threeJS/glass/Glass_Window_002_normal.jpg';
+import heightImage from '/public/assets/threeJS/glass/Glass_Window_002_height.png';
+import ambientImage from '/public/assets/threeJS/glass/Glass_Window_002_ambientOcclusion.jpg';
+import opacityImage from '/public/assets/threeJS/glass/Glass_Window_002_opacity.jpg';
 
 interface Glass3MeshProps {
     useBaseMap?: boolean;
@@ -29,19 +29,19 @@ interface Glass3MeshProps {
 }
 
 function Glass3Mesh({
-        useBaseMap = true,
-        useRoughnessMap = true,
-        useMetallicMap = true,
-        useNormalMap = true,
-        useDisplacementMap = true,
-        useAmbientMap = false,
-        useAlphaMap = false,
-        metalness = 0.5,
-        roughness = 1,
-        normalScale = 1,
-        displacementScale = 0.2,
-        displacementBias = -0.2,
-    }: Glass3MeshProps) {
+    useBaseMap = true,
+    useRoughnessMap = true,
+    useMetallicMap = true,
+    useNormalMap = true,
+    useDisplacementMap = true,
+    useAmbientMap = false,
+    useAlphaMap = false,
+    metalness = 0.5,
+    roughness = 1,
+    normalScale = 1,
+    displacementScale = 0.2,
+    displacementBias = -0.2,
+}: Glass3MeshProps) {
     const textures = useTexture({
         map: baseImage,
         roughnessMap: roughnessImage,
@@ -116,51 +116,74 @@ function Glass3Mesh({
             material.needsUpdate = true;
         }
     }, [
-        useBaseMap, useRoughnessMap, useMetallicMap, useNormalMap, useDisplacementMap, useAmbientMap, useAlphaMap,
-        metalness, roughness, normalScale, displacementScale, displacementBias,
-        textures
+        useBaseMap,
+        useRoughnessMap,
+        useMetallicMap,
+        useNormalMap,
+        useDisplacementMap,
+        useAmbientMap,
+        useAlphaMap,
+        metalness,
+        roughness,
+        normalScale,
+        displacementScale,
+        displacementBias,
+        textures,
     ]);
 
     const mesh = useRef<Mesh>(null);
 
     useEffect(() => {
-        textures.map.repeat.x = textures.displacementMap.repeat.x =
-        textures.ambientMap.repeat.x = textures.roughnessMap.repeat.x =
-        textures.metallicMap.repeat.x = textures.normalMap.repeat.x =
-        textures.alphaMap.repeat.x = 4;
+        textures.map.repeat.x =
+            textures.displacementMap.repeat.x =
+            textures.ambientMap.repeat.x =
+            textures.roughnessMap.repeat.x =
+            textures.metallicMap.repeat.x =
+            textures.normalMap.repeat.x =
+            textures.alphaMap.repeat.x =
+                4;
 
-        textures.map.wrapS = textures.displacementMap.wrapS =
-        textures.ambientMap.wrapS = textures.roughnessMap.wrapS =
-        textures.metallicMap.wrapS = textures.normalMap.wrapS =
-        textures.alphaMap.wrapS = THREE.MirroredRepeatWrapping;
+        textures.map.wrapS =
+            textures.displacementMap.wrapS =
+            textures.ambientMap.wrapS =
+            textures.roughnessMap.wrapS =
+            textures.metallicMap.wrapS =
+            textures.normalMap.wrapS =
+            textures.alphaMap.wrapS =
+                THREE.MirroredRepeatWrapping;
 
-        if (mesh.current && mesh.current.geometry.attributes.uv2 === undefined && mesh.current.geometry.attributes.uv) {
-            mesh.current.geometry.setAttribute("uv2",
-                    new THREE.BufferAttribute(mesh.current.geometry.attributes.uv.array, 2))
+        if (
+            mesh.current &&
+            mesh.current.geometry.attributes.uv2 === undefined &&
+            mesh.current.geometry.attributes.uv
+        ) {
+            mesh.current.geometry.setAttribute(
+                'uv2',
+                new THREE.BufferAttribute(mesh.current.geometry.attributes.uv.array, 2)
+            );
         }
-    }, [])
+    }, []);
 
     return (
         <mesh ref={mesh}>
-            <cylinderGeometry args={[2, 2, 3, 256, 256, true]}/>
-            <meshStandardMaterial ref={materialRef}/>
+            <cylinderGeometry args={[2, 2, 3, 256, 256, true]} />
+            <meshStandardMaterial ref={materialRef} />
         </mesh>
     );
 }
 
-interface TextureProps extends Glass3MeshProps {
-}
+interface TextureProps extends Glass3MeshProps {}
 
 function Texture(props: TextureProps) {
     return (
-        <div style={{backgroundColor: "black"}}>
+        <div style={{ backgroundColor: 'black' }}>
             <Main>
                 <Canvas>
-                    <OrbitControls/>
-                    <ambientLight intensity={0.2}/>
-                    <directionalLight position={[0, 1, -8]} intensity={0.4}/>
-                    <directionalLight position={[1, 2, 8]} intensity={0.4}/>
-                    <Glass3Mesh {...props}/>
+                    <OrbitControls />
+                    <ambientLight intensity={0.2} />
+                    <directionalLight position={[0, 1, -8]} intensity={0.4} />
+                    <directionalLight position={[1, 2, 8]} intensity={0.4} />
+                    <Glass3Mesh {...props} />
                 </Canvas>
             </Main>
         </div>
