@@ -15,7 +15,7 @@ import * as THREE from 'three';
 import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
 import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper';
 
-import envFile from '/public/assets/threeJS/rogland_clear_night_4k.hdr';
+import envFile from '/assets/threeJS/rogland_clear_night_4k.hdr';
 
 // 도넛 모양의 기하학적 객체 정의 (반지름 0.4, 튜브 반지름 0.1, 분할 수 32x32)
 const torusGeometry = new THREE.TorusGeometry(0.4, 0.1, 32, 32);
@@ -27,6 +27,7 @@ const torusMaterial = new THREE.MeshStandardMaterial({
 });
 
 RectAreaLightUniformsLib.init();
+
 /**
  * 3D 장면의 메시 객체들을 렌더링하는 컴포넌트
  * 바닥 평면, 반구체, 8개의 도넛 모양 객체, 그리고 회전하는 작은 구체를 포함합니다.
@@ -34,7 +35,7 @@ RectAreaLightUniformsLib.init();
  *
  * @param {Object} light - 광원에 대한 참조 객체
  */
-export function MeshObject({ light }) {
+function MeshObject({ light }) {
     const { scene } = useThree();
 
     // light 타겟을 씬에 추가하고, 컴포넌트 언마운트 시 제거
@@ -200,7 +201,7 @@ function SpotLight({ light }) {
  *
  * @param {Object} light - 광원에 대한 참조 객체
  */
-export function RectAreaLight({ light }) {
+function RectAreaLight({ light }) {
     useHelper(light, RectAreaLightHelper);
     return (
         <rectAreaLight

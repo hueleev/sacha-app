@@ -4,9 +4,9 @@ import Main from '../Main';
 import { OrbitControls, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 
-import threeTone from '/public/assets/threeJS/gradientMaps/threeTone.jpg';
-import fourTone from '/public/assets/threeJS/gradientMaps/fourTone.jpg';
-import fiveTone from '/public/assets/threeJS/gradientMaps/fiveTone.jpg';
+import threeTone from '/assets/threeJS/gradientMaps/threeTone.jpg';
+import fourTone from '/assets/threeJS/gradientMaps/fourTone.jpg';
+import fiveTone from '/assets/threeJS/gradientMaps/fiveTone.jpg';
 
 /**
  * 텍스처를 반환합니다.
