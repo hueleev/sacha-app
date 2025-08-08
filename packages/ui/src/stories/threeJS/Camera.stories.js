@@ -24,9 +24,6 @@ export default {
             description: {
                 component: description,
             },
-            source: {
-                code: PerspectiveCode,
-            },
         },
     },
 };
