@@ -5,13 +5,13 @@ import * as THREE from 'three';
 import { useEffect, useRef } from 'react';
 import { Mesh } from 'three';
 
-import baseImage from '/public/assets/threeJS/glass/Glass_Window_002_basecolor.jpg';
-import roughnessImage from '/public/assets/threeJS/glass/Glass_Window_002_roughness.jpg';
-import metalicImage from '/public/assets/threeJS/glass/Glass_Window_002_metallic.jpg';
-import normalImage from '/public/assets/threeJS/glass/Glass_Window_002_normal.jpg';
-import heightImage from '/public/assets/threeJS/glass/Glass_Window_002_height.png';
-import ambientImage from '/public/assets/threeJS/glass/Glass_Window_002_ambientOcclusion.jpg';
-import opacityImage from '/public/assets/threeJS/glass/Glass_Window_002_opacity.jpg';
+import baseImage from '/assets/threeJS/glass/Glass_Window_002_basecolor.jpg';
+import roughnessImage from '/assets/threeJS/glass/Glass_Window_002_roughness.jpg';
+import metalicImage from '/assets/threeJS/glass/Glass_Window_002_metallic.jpg';
+import normalImage from '/assets/threeJS/glass/Glass_Window_002_normal.jpg';
+import heightImage from '/assets/threeJS/glass/Glass_Window_002_height.png';
+import ambientImage from '/assets/threeJS/glass/Glass_Window_002_ambientOcclusion.jpg';
+import opacityImage from '/assets/threeJS/glass/Glass_Window_002_opacity.jpg';
 
 interface Glass3MeshProps {
     useBaseMap?: boolean;

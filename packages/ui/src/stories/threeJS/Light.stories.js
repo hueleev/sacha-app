@@ -19,6 +19,8 @@ RectArea Light: 사각형 모양의 면에서 빛을 방출하는 광원으로, 
 
 - Environment Light: HDR 이미지를 사용하여 장면에 환경 조명과 배경을 제공합니다. Drei 라이브러리와 https://polyhaven.com/ 사용.
 
+- RectAreaLight: 사각형 모양의 면에서 빛을 방출하는 광원으로, 형광등이나 창문에서 들어오는 빛과 유사합니다. RectAreaLight는 일반적인 광원과 달리 물리 기반 렌더링(PBR, Physically Based Rendering) 기법을 사용하여 빛을 계산합니다. 이 계산을 위해서는 특별한 셰이더 코드가 필요하며, \`RectAreaLightUniformsLib.init()\`가 바로 이 코드를 준비하는 역할을 합니다.
+
 각 조명 유형은 컨트롤을 통해 개별적으로 켜고 끌 수 있습니다.
 .`;
 

@@ -1,7 +1,7 @@
 import { Canvas } from '@react-three/fiber';
 import Main from '../Main';
 import { OrbitControls } from '@react-three/drei';
-import matcap from '/public/assets/threeJS/mapcap.jpg';
+import matcap from '/assets/threeJS/mapcap.jpg';
 import { useTexture } from '@react-three/drei';
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
