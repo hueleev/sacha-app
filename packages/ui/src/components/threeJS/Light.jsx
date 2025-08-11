@@ -254,26 +254,24 @@ function Light({
     const light = useRef();
 
     return (
-        <div style={{ backgroundColor: 'black' }}>
-            <Main>
-                {/* 3D 장면을 렌더링하는 Canvas, 카메라 설정 (시야각 75도, 위치 [7,7,0]) */}
-                <Canvas camera={{ fov: 75, position: [7, 7, 0] }}>
-                    {/* 마우스로 장면을 회전, 확대/축소할 수 있는 컨트롤 */}
-                    <OrbitControls />
-                    {/*<LightComponent {...props} light={light}/>*/}
-                    {/* 조명 타입들을 조건부로 렌더링 */}
-                    {ambientLight && <AmbientLight />}
-                    {hemisphereLight && <HemisphereLight />}
-                    {directionalLight && <DirectionalLight light={light} />}
-                    {pointLight && <PointLight light={light} />}
-                    {spotLight && <SpotLight light={light} />}
-                    {rectAreaLight && <RectAreaLight light={light} />}
-                    {environmentLight && <EnvironmentLight light={light} />}
-                    {/* 3D 객체들을 렌더링 */}
-                    <MeshObject light={light} />
-                </Canvas>
-            </Main>
-        </div>
+        <Main darkMode>
+            {/* 3D 장면을 렌더링하는 Canvas, 카메라 설정 (시야각 75도, 위치 [7,7,0]) */}
+            <Canvas camera={{ fov: 75, position: [7, 7, 0] }}>
+                {/* 마우스로 장면을 회전, 확대/축소할 수 있는 컨트롤 */}
+                <OrbitControls />
+                {/*<LightComponent {...props} light={light}/>*/}
+                {/* 조명 타입들을 조건부로 렌더링 */}
+                {ambientLight && <AmbientLight />}
+                {hemisphereLight && <HemisphereLight />}
+                {directionalLight && <DirectionalLight light={light} />}
+                {pointLight && <PointLight light={light} />}
+                {spotLight && <SpotLight light={light} />}
+                {rectAreaLight && <RectAreaLight light={light} />}
+                {environmentLight && <EnvironmentLight light={light} />}
+                {/* 3D 객체들을 렌더링 */}
+                <MeshObject light={light} />
+            </Canvas>
+        </Main>
     );
 }
 

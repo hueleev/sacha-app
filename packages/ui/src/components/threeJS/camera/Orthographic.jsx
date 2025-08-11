@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 
 import Main from '../Main.js';
-import { useControls } from 'leva';
 import * as THREE from 'three';
 import { OrbitControls, useHelper } from '@react-three/drei';
 import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper.js';
@@ -19,7 +18,7 @@ const torusMaterial = new THREE.MeshStandardMaterial({
 
 RectAreaLightUniformsLib.init();
 
-function MeshObject({ light, isSphere }) {
+function MeshObject({ light }) {
     useHelper(light, RectAreaLightHelper);
     const { camera } = useThree();
 
@@ -31,18 +30,16 @@ function MeshObject({ light, isSphere }) {
             smallSpherePivot.rotation.y = THREE.MathUtils.degToRad(time * 50); // 시간에 따라 피벗 회전 (초당 50도)
         }
 
-        if (isSphere) {
-            const target = new THREE.Vector3();
-            if (smallSpherePivot && smallSpherePivot.children[0]) {
-                smallSpherePivot.children[0].getWorldPosition(target);
-                camera.position.copy(target);
+        const target = new THREE.Vector3();
+        if (smallSpherePivot && smallSpherePivot.children[0]) {
+            smallSpherePivot.children[0].getWorldPosition(target);
+            camera.position.copy(target);
 
-                const ghostSpherePivot = state.scene.getObjectByName('ghostSpherePivot');
-                if (ghostSpherePivot && ghostSpherePivot.children[0]) {
-                    ghostSpherePivot.rotation.y = THREE.MathUtils.degToRad(time * 50 + 30);
-                    ghostSpherePivot.children[0].getWorldPosition(target);
-                    camera.lookAt(target);
-                }
+            const ghostSpherePivot = state.scene.getObjectByName('ghostSpherePivot');
+            if (ghostSpherePivot && ghostSpherePivot.children[0]) {
+                ghostSpherePivot.rotation.y = THREE.MathUtils.degToRad(time * 50 + 30);
+                ghostSpherePivot.children[0].getWorldPosition(target);
+                camera.lookAt(target);
             }
         }
     });
@@ -101,57 +98,29 @@ function MeshObject({ light, isSphere }) {
         </>
     );
 }
-function CameraUpdater({ fov, near, far, isSphere }) {
+function CameraUpdater({ zoom, near, far }) {
     const { camera } = useThree();
 
     // storybook args 사용
     useEffect(() => {
-        if (isSphere) {
-            camera.fov = fov;
-        } else {
-            camera.fov = 75; // isSphere가 false일 때 fov를 75로 리셋
-        }
         camera.near = near;
         camera.far = far;
+        camera.zoom = zoom;
         camera.updateProjectionMatrix();
-    }, [fov, near, far, camera, isSphere]);
+    }, [zoom, near, far, camera]);
 
-    // leva 사용
-    useControls({
-        positionZ: {
-            value: 0,
-            min: -10,
-            max: 10,
-            step: 0.1,
-            onChange: (v) => (camera.position.z = v),
-        },
-        targetZ: {
-            value: 0,
-            min: -10,
-            max: 10,
-            step: 0.1,
-            onChange: (v) => camera.lookAt(0, 0, v),
-        },
-    });
     return null;
 }
 
-function Perspective({ fov = 75, near = 0.1, far = 20, isSphere = false }) {
+function Perspective({ zoom = 100, near = 0.1, far = 20 }) {
     const light = useRef();
     const controlsRef = useRef();
 
-    useEffect(() => {
-        if (!isSphere && controlsRef.current) {
-            controlsRef.current.reset();
-        }
-    }, [isSphere]);
-
     return (
         <Main darkMode>
-            <Canvas camera={{ position: [7, 7, 0], fov: 75 }}>
-                <CameraUpdater fov={fov} near={near} far={far} isSphere={isSphere} />
-                <MeshObject light={light} isSphere={isSphere} />
-                <OrbitControls ref={controlsRef} enabled={!isSphere} />
+            <Canvas orthographic camera={{ position: [7, 7, 0] }}>
+                <CameraUpdater zoom={zoom} near={near} far={far} />
+                <MeshObject light={light} />
             </Canvas>
         </Main>
     );

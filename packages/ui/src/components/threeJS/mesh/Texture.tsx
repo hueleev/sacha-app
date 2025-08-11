@@ -176,17 +176,15 @@ interface TextureProps extends Glass3MeshProps {}
 
 function Texture(props: TextureProps) {
     return (
-        <div style={{ backgroundColor: 'black' }}>
-            <Main>
-                <Canvas>
-                    <OrbitControls />
-                    <ambientLight intensity={0.2} />
-                    <directionalLight position={[0, 1, -8]} intensity={0.4} />
-                    <directionalLight position={[1, 2, 8]} intensity={0.4} />
-                    <Glass3Mesh {...props} />
-                </Canvas>
-            </Main>
-        </div>
+        <Main darkMode>
+            <Canvas>
+                <OrbitControls />
+                <ambientLight intensity={0.2} />
+                <directionalLight position={[0, 1, -8]} intensity={0.4} />
+                <directionalLight position={[1, 2, 8]} intensity={0.4} />
+                <Glass3Mesh {...props} />
+            </Canvas>
+        </Main>
     );
 }
 
