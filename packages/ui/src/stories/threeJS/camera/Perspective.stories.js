@@ -1,5 +1,5 @@
-import Perspective from '../../components/threeJS/camera/Perspective.jsx';
-import PerspectiveCode from '../../components/threeJS/camera/Perspective.jsx?raw';
+import Perspective from '../../../components/threeJS/camera/Perspective.jsx';
+import PerspectiveCode from '../../../components/threeJS/camera/Perspective.jsx?raw';
 
 const description = `
 Three.js의 카메라 컴포넌트입니다.
@@ -11,23 +11,24 @@ Three.js의 카메라 컴포넌트입니다.
 - CubeCamera: 환경 맵을 생성하는 카메라
 
 \`aspect = width/height\`
-`;
-const perspectiveDescription = `
+
+---
+
 - fov : 카메라 화각
 - near : 카메라 가까운 거리
 - far : 카메라 먼 거리
 
-\`position\`은 **"카메라가 어디에 있는지"**를 결정하고, \`lookAt\`은 **"카메라가 어디를 바라보고 있는지"**를 결정합니다.
+- \`position\`은 **"카메라가 어디에 있는지"**를 결정하고, \`lookAt\`은 **"카메라가 어디를 바라보고 있는지"**를 결정합니다.
 `;
+
 export default {
-    title: 'threeJS/Camera',
+    title: 'threeJS/Camera/Perspective',
     component: Perspective,
     tags: ['autodocs'],
     parameters: {
         docs: {
             description: {
                 component: description,
-                story: perspectiveDescription,
             },
             source: {
                 code: PerspectiveCode,
@@ -67,31 +68,7 @@ export default {
     },
 };
 
-export const PerspectiveCamera = {
-    parameter: {
-        docs: {
-            description: {
-                story: perspectiveDescription,
-            },
-        },
-    },
-    args: {
-        fov: 75,
-        near: 0.1,
-        far: 20,
-    },
-};
-
-export const PerspectiveCamera2 = {
-    parameter: {
-        docs: {
-            title: 'PerspectiveCamera',
-            description: {
-                story: perspectiveDescription,
-            },
-        },
-    },
-
+export const Default = {
     args: {
         fov: 75,
         near: 0.1,
