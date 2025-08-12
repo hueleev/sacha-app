@@ -7,15 +7,18 @@ GEMINI는 **한글로 응답**하도록 설정합니다.
 
 ## 프로젝트 개요
 
-**taste-buds**는 사용자 개인의 취향을 기록하고, 다른 사람의 취향을 탐색하며, 공감할 수 있는 소셜 성향의 앱입니다.
+**taste-buds**는 사용자 개인의 취향을 기록하고, 다른 사람의 취향을 탐색하며, 공감할 수 있는 소셜 성향의 웹앱.
 
 ## 프로젝트 구조
 
-```bash
-apps/taste-buds      # 앱 소스 코드
-packages/            # 공통 컴포넌트 및 유틸리티
-storybook/           # Storybook 구성
-```
+- shadcnUI 기반의 monorepo 프로젝트임. 
+- NextJS 사용
+- pnpm 사용 
+
+- `apps/web` : 샘플코드로 해당 소스는 인덱싱하지 않고, **답변할 때 참고하지 않도록 한다.**
+- `apps/taste-buds` : 웹앱 프로젝트이자 우리가 만들어야 할 프로젝트. 
+- `packages/` : 공통 컴포넌트 및 유틸리티
+- `packates/ui` : 공통 컴포넌트 및 스토리북 (shadcnUI 컴포넌트 포함)
 
 ## 앱 기능 요약
 
@@ -39,18 +42,43 @@ storybook/           # Storybook 구성
 
 ---
 
-### 2. 취향 등록
+### 2. 취향 등록/수정
 
-등록 가능한 취향 유형:
+## 기획 
+1. 업로드 가능한 취향 유형 및 입력 항목: 음악,영화,책은 소감과 별점을 필수로 입력해야한다.
+   - 🎵 음악: 제목, 가수, 연도, 앨범 커버(이미지 url)
+   - 🎬 영화: 제목, 감독, 연도, 썸네일(이미지 url)
+   - 📚 책: 제목, 작가, 연도, 표지 이미지(이미지 url)
+   - 🖼️ 사진: 제목, 이미지 업로드, 설명
 
-- 🎵 음악: 제목, 가수, 연도, 앨범 커버
-- 🎬 영화: 제목, 감독, 연도, 썸네일
-- 📚 책: 제목, 작가, 연도, 표지 이미지
-- 🖼️ 사진: 제목, 이미지 업로드
+2. '음악, 영화, 책' 등록하기
+   - '음악, 영화, 책을 접한 소감과 별점을 등록한다.' 
+   - 검색하기와 직접입력 2개의 버튼이 보여진다.
+   - 검색하기 클릭 시, 하단에 '##개발' 에 적힌 openAPI를 사용하여 검색한다. 검색 후, 선택하면 1에 정의된 유형 별 입력항목 input box가 readonly로 생성되며 항목들이 자동 입력된다. 이미지는 url이 보여지는 게 아니라 이미지가 보여지도록 한다. 데이터 저장할 때, 이미지 url을 저장한다.
+   - 직접입력 클릭 시, 1에 정의된 input box들이 생성되며 직접입력할 수 있게 한다. 이미지는 파일선택으로 보여지며, 직접입력의 경우 base64로 이미지를 저장하도록 한다.
+   - 모든 항목은 소감과 별점은 공통 입력 항목이며, 검색하기,직접입력 클릭 시, input이 최하단에 생성되도록 한다.
 
-> 네이버 OpenAPI를 통해 콘텐츠 자동 검색 및 정보 입력  
-> 직접 입력도 가능 (모든 필드 수동 입력)  
-> 소감 및 별점 입력은 필수
+3. '사진' 등록하기
+   - '사용자가 직접 찍은 취향의 사진을 등록하고, 제목과 설명을 입력한다.'
+   - 파일선택과, 제목, 설명 input이 보여진다.
+
+4. '음악, 영화, 책' 수정하기
+   - 이미지 정보가 url인 경우 소감과 별점만 수정 가능하다. 
+   - 이미지 정보가 base64인 경우, 모든 항목이 수정 가능하다.
+
+5. '사진' 수정하기
+   - 제목과 설명만 수정가능하다.
+   
+## 개발
+
+1. 검색하기에서 사용하는 openAPI는 아래와 같다.
+  - 영화: TMDb API 사용
+  - 책: Naver 책 검색 API 사용
+  - 음악: iTunes Search API 사용
+
+2. 음악,영화,책, 사진의 데이터 정보는 별도의 테이블로 구분하여 입력항목을 저장한다. openAPI로 검색된 정보가 해당 테이블에 없는 경우, insert 한다. 직접입력의 경우, prefix로 `taste-` 를 붙여 uuid를 생성한다.
+
+3. 소감, 별점, 작성일자와 같은 정보는 posts 테이블에 저장하고, 데이터 테이블과 relation을 맺어준다. 
 
 ---
 
@@ -84,47 +112,10 @@ storybook/           # Storybook 구성
 - database는 vercel이 출시한 neon을 사용한다.
 - table 정보
 
--- users: 사용자 테이블 (NextAuth 호환)
-CREATE TABLE "users" (
-id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-name TEXT,
-email TEXT UNIQUE,
-email_verified TIMESTAMPTZ,
-image TEXT,
-created_at TIMESTamptz DEFAULT now()
-);
-
--- accounts: OAuth 계정 연결 테이블 (NextAuth 호환)
-CREATE TABLE "accounts" (
-id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-type TEXT NOT NULL, -- 'oauth'
-provider TEXT NOT NULL, -- 'kakao'
-provider_account_id TEXT NOT NULL, -- kakao user id
-refresh_token TEXT,
-access_token TEXT,
-expires_at BIGINT,
-token_type TEXT,
-scope TEXT,
-id_token TEXT,
-session_state TEXT,
-created_at TIMESTAMPTZ DEFAULT now(),
-updated_at TIMESTAMPTZ DEFAULT now(),
-UNIQUE(provider, provider_account_id)
-);
-
--- sessions: 세션 테이블 (NextAuth 호환)
-CREATE TABLE "sessions" (
-id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-session_token TEXT UNIQUE NOT NULL,
-user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-expires TIMESTAMPTZ NOT NULL
-);
-
 -- profiles: 사용자 프로필 테이블
 CREATE TABLE "profiles" (
 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+user_id UUID REFERENCES "user"(id) ON DELETE CASCADE,
 nickname TEXT NOT NULL,
 bio TEXT,
 created_at TIMESTAMPTZ DEFAULT now(),
@@ -144,26 +135,83 @@ updated_at TIMESTAMPTZ DEFAULT now(),
 UNIQUE(code_group, code)
 );
 
--- contents: 콘텐츠 정보는 Naver API를 통해 가져오므로 별도의 테이블이 필요하지 않음
+-- music_contents: 음악 콘텐츠 정보 테이블
+CREATE TABLE "music_contents" (
+id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+title TEXT NOT NULL,
+artist TEXT,
+release_year INTEGER,
+image TEXT,
+source TEXT, -- 'api' or 'manual'
+source_id TEXT, -- ID from external API or 'taste-' prefixed UUID for manual
+created_at TIMESTAMPTZ DEFAULT now(),
+updated_at TIMESTAMPTZ DEFAULT now(),
+UNIQUE(source, source_id)
+);
+
+-- movie_contents: 영화 콘텐츠 정보 테이블
+CREATE TABLE "movie_contents" (
+id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+title TEXT NOT NULL,
+director TEXT,
+release_year INTEGER,
+image TEXT,
+source TEXT, -- 'api' or 'manual'
+source_id TEXT, -- ID from external API or 'taste-' prefixed UUID for manual
+created_at TIMESTAMPTZ DEFAULT now(),
+updated_at TIMESTAMPTZ DEFAULT now(),
+UNIQUE(source, source_id)
+);
+
+-- book_contents: 책 콘텐츠 정보 테이블
+CREATE TABLE "book_contents" (
+id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+title TEXT NOT NULL,
+author TEXT,
+publication_year INTEGER,
+image TEXT,
+source TEXT, -- 'api' or 'manual'
+source_id TEXT, -- ID from external API or 'taste-' prefixed UUID for manual
+created_at TIMESTAMPTZ DEFAULT now(),
+updated_at TIMESTAMPTZ DEFAULT now(),
+UNIQUE(source, source_id)
+);
+
+-- photo_contents: 사진 콘텐츠 정보 테이블
+CREATE TABLE "photo_contents" (
+id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+title TEXT NOT NULL,
+image TEXT, -- For uploaded images (base64 or URL)
+created_at TIMESTAMPTZ DEFAULT now(),
+updated_at TIMESTAMPTZ DEFAULT now()
+);
 
 -- posts: 게시물 및 별점 테이블
 CREATE TABLE "posts" (
 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+user_id UUID REFERENCES "user"(id) ON DELETE CASCADE,
 content_type_id UUID REFERENCES common_codes(id) ON DELETE RESTRICT, -- 콘텐츠 타입 코드 ID
-content_id TEXT NOT NULL, -- Naver API에서 제공하는 콘텐츠 ID
-title TEXT NOT NULL, -- 콘텐츠 제목
+music_content_id UUID REFERENCES music_contents(id) ON DELETE CASCADE,
+movie_content_id UUID REFERENCES movie_contents(id) ON DELETE CASCADE,
+book_content_id UUID REFERENCES book_contents(id) ON DELETE CASCADE,
+photo_content_id UUID REFERENCES photo_contents(id) ON DELETE CASCADE,
 comment TEXT NOT NULL,
-rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+rating INTEGER CHECK (rating BETWEEN 1 AND 5), -- Rating is optional for photos
 created_at TIMESTAMPTZ DEFAULT now(),
 updated_at TIMESTAMPTZ DEFAULT now(),
-UNIQUE(user_id, content_type_id, content_id)
+-- Ensure only one content type is linked per post
+CONSTRAINT chk_one_content_type CHECK (
+    (music_content_id IS NOT NULL AND movie_content_id IS NULL AND book_content_id IS NULL AND photo_content_id IS NULL) OR
+    (music_content_id IS NULL AND movie_content_id IS NOT NULL AND book_content_id IS NULL AND photo_content_id IS NULL) OR
+    (music_content_id IS NULL AND movie_content_id IS NULL AND book_content_id IS NOT NULL AND photo_content_id IS NULL) OR
+    (music_content_id IS NULL AND movie_content_id IS NULL AND book_content_id IS NULL AND photo_content_id IS NOT NULL)
+)
 );
 
 -- likes: 공감(좋아요) 테이블
 CREATE TABLE "likes" (
 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+user_id UUID REFERENCES "user"(id) ON DELETE CASCADE,
 post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
 created_at TIMESTAMPTZ DEFAULT now(),
 UNIQUE(user_id, post_id)
@@ -172,20 +220,28 @@ UNIQUE(user_id, post_id)
 -- bookmarks: 찜하기 테이블
 CREATE TABLE "bookmarks" (
 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+user_id UUID REFERENCES "user"(id) ON DELETE CASCADE,
 content_type_id UUID REFERENCES common_codes(id) ON DELETE RESTRICT, -- 콘텐츠 타입 코드 ID
-content_id TEXT NOT NULL, -- Naver API에서 제공하는 콘텐츠 ID
-title TEXT NOT NULL, -- 콘텐츠 제목
-thumbnail_url TEXT, -- 썸네일 URL
+music_content_id UUID REFERENCES music_contents(id) ON DELETE CASCADE,
+movie_content_id UUID REFERENCES movie_contents(id) ON DELETE CASCADE,
+book_content_id UUID REFERENCES book_contents(id) ON DELETE CASCADE,
+photo_content_id UUID REFERENCES photo_contents(id) ON DELETE CASCADE,
 created_at TIMESTAMPTZ DEFAULT now(),
-UNIQUE(user_id, content_type_id, content_id)
+UNIQUE(user_id, content_type_id, music_content_id, movie_content_id, book_content_id, photo_content_id), -- Ensure uniqueness for content type and specific content
+-- Ensure only one content type is linked per bookmark
+CONSTRAINT chk_one_bookmark_content_type CHECK (
+    (music_content_id IS NOT NULL AND movie_content_id IS NULL AND book_content_id IS NULL AND photo_content_id IS NULL) OR
+    (music_content_id IS NULL AND movie_content_id IS NOT NULL AND book_content_id IS NULL AND photo_content_id IS NULL) OR
+    (music_content_id IS NULL AND movie_content_id IS NULL AND book_content_id IS NOT NULL AND photo_content_id IS NULL) OR
+    (music_content_id IS NULL AND movie_content_id IS NULL AND book_content_id IS NULL AND photo_content_id IS NOT NULL)
+)
 );
 
 -- follows: 팔로우 관계 테이블
 CREATE TABLE "follows" (
 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-follower_id UUID REFERENCES users(id) ON DELETE CASCADE,
-following_id UUID REFERENCES users(id) ON DELETE CASCADE,
+follower_id UUID REFERENCES "user"(id) ON DELETE CASCADE,
+following_id UUID REFERENCES "user"(id) ON DELETE CASCADE,
 created_at TIMESTAMPTZ DEFAULT now(),
 UNIQUE(follower_id, following_id)
 );

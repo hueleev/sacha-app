@@ -1,26 +1,27 @@
-"use client"
+'use client'
 
-import { useState } from "react"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 import Auth from "@/components/auth"
-import MainApp from "@/components/main-app"
 
 export default function Page() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [user, setUser] = useState(null)
+  const { data: session, status } = useSession()
+  const router = useRouter()
 
-  const handleLogin = (userData: any) => {
-    setUser(userData)
-    setIsLoggedIn(true)
-  }
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/main")
+    }
+  }, [status, router])
 
-  const handleLogout = () => {
-    setUser(null)
-    setIsLoggedIn(false)
+  if (status === "loading" || status === "authenticated") {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>
   }
 
   return (
     <div className="min-h-screen bg-white">
-      {isLoggedIn ? <MainApp user={user} onLogout={handleLogout} /> : <Auth onLogin={handleLogin} />}
+      <Auth />
     </div>
   )
 }

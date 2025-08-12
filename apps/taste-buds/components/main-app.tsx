@@ -1,15 +1,25 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@workspace/ui/components/shadcn/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/components/shadcn/tabs"
 import { Avatar, AvatarFallback } from "@workspace/ui/components/shadcn/avatar"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/shadcn/select"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@workspace/ui/components/shadcn/dropdown-menu"
 import { Plus, Star, Film, Book, Headphones, Camera, User, Heart, Bookmark, HelpCircle, X } from "lucide-react"
 import AddTaste from "./add-taste"
 
 interface MainAppProps {
   user: any
+  profile: any // Add profile prop
   onLogout: () => void
 }
 
@@ -26,7 +36,8 @@ interface TasteItem {
   isBookmarked: boolean
 }
 
-export default function MainApp({ user, onLogout }: MainAppProps) {
+export default function MainApp({ user, profile, onLogout }: MainAppProps) {
+  const router = useRouter()
   const [showAddTaste, setShowAddTaste] = useState(false)
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [filterType, setFilterType] = useState<"all" | "movie" | "book" | "music" | "photo">("all")
@@ -108,6 +119,10 @@ export default function MainApp({ user, onLogout }: MainAppProps) {
       isBookmarked: false,
     },
   ])
+
+  const handleProfileEdit = () => {
+    router.push("/profile")
+  }
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -236,7 +251,7 @@ export default function MainApp({ user, onLogout }: MainAppProps) {
             <p className="text-gray-600">팔로우한 사람들의 취향만 골라서 볼 수 있어요</p>
           </div>
 
-          <div>
+          <div className="border-t border-gray-200 pt-2">
             <h4 className="font-medium mb-1">⭐ ZzimZzim</h4>
             <p className="text-gray-600">북마크한 취향들을 저장해두고 나중에 다시 볼 수 있어요</p>
           </div>
@@ -266,11 +281,25 @@ export default function MainApp({ user, onLogout }: MainAppProps) {
               <Plus className="w-3 h-3 mr-1" />
               취향 등록
             </Button>
-            <Avatar className="w-6 h-6 border border-black flex items-center justify-center">
-              <AvatarFallback className="bg-white text-xs">
-                <User className="w-3 h-3" />
-              </AvatarFallback>
-            </Avatar>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="w-8 h-8 border border-black cursor-pointer flex items-center justify-center">
+                  <AvatarFallback className="bg-white text-xs">
+                    <User className="w-4 h-4" />
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 border-black rounded-none bg-white">
+                <DropdownMenuLabel>{profile?.nickname || user?.name || "My Account"}</DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-gray-200" />
+                <DropdownMenuItem onSelect={handleProfileEdit} className="cursor-pointer my-2">
+                  프로필 수정
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={onLogout} className="cursor-pointer">
+                  로그아웃
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
