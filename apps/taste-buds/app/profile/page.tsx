@@ -34,7 +34,7 @@ export default function RegisterPage() {
               setNickname(data.profile.nickname || "")
               setBio(data.profile.bio || "")
               // If image is not provided by session, use the one from profile
-              if (!session.user.image && data.profile.image) {
+              if (session.user && !session.user.image && data.profile.image) {
                 setImage(data.profile.image)
               }
               setIsEditing(true)
@@ -95,7 +95,7 @@ export default function RegisterPage() {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>
   }
 
-  if (status === "unauthenticated") {ㅊ
+  if (status === "unauthenticated") {
     router.push("/")
     return null
   }

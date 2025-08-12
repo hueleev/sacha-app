@@ -5,7 +5,7 @@ import { user, account, session } from "@/lib/schema"
 import GoogleProvider from "next-auth/providers/google"
 import KakaoProvider from "next-auth/providers/kakao"
 
-export const authOptions: AuthOptions = {
+const authOptions: AuthOptions = {
   adapter: DrizzleAdapter(db, {
     usersTable: user,
     accountsTable: account,
@@ -43,4 +43,4 @@ export const authOptions: AuthOptions = {
 
 const handler = NextAuth(authOptions)
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST, authOptions }
