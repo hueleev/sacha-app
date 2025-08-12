@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { authOptions } from "@/app/api/auth/authOptions"
 import { db } from "@/lib/db"
 import { profiles, user } from "@/lib/schema"
 import { eq } from "drizzle-orm"
