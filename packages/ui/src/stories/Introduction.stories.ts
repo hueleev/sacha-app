@@ -1,5 +1,5 @@
-import type { StoryObj } from "@storybook/react";
-import SampleMain from "../components/threeJS/SampleMain";
+import type { StoryObj } from '@storybook/react';
+import SampleMain from '../components/threeJS/SampleMain';
 
 const description = `
 # 🎨 스토리북 학습 노트
@@ -30,7 +30,7 @@ const description = `
 - 성능 최적화 기법 학습 ⚡
 
 ## 📖 참고 자료
-- [React Three Fiber 공식 문서](https://docs.pmnd.rs/react-three-fiber) 📚
+- [PMND 공식 문서](https://docs.pmnd.rs/) 📚
 - [Three.js 공식 문서](https://threejs.org/docs/) 📖
 - [Drei 라이브러리](https://github.com/pmndrs/drei) 🛠️
 - [GIS DEVELOPER youtube](https://youtu.be/Sg6OcVxe64k?si=Z0oJRdiYVYkvNnvQ) 🎞️
@@ -38,19 +38,19 @@ const description = `
 `;
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: "Introduction",
-  component: SampleMain,
-  tags: ["autodocs"],
-  argTypes: {
-    color: { control: "color" },
-  },
-  parameters: {
-    docs: {
-      description: {
-        component: description,
-      },
+    title: 'Introduction',
+    component: SampleMain,
+    tags: ['autodocs'],
+    argTypes: {
+        color: { control: 'color' },
     },
-  },
+    parameters: {
+        docs: {
+            description: {
+                component: description,
+            },
+        },
+    },
 };
 
 export default meta;
@@ -58,7 +58,7 @@ type Story = StoryObj<typeof meta>;
 
 // // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
-  args: {
-    color: "red",
-  },
+    args: {
+        color: 'red',
+    },
 };
