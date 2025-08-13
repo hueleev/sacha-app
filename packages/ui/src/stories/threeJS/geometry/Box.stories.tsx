@@ -2,7 +2,7 @@ import Box from "../../../components/threeJS/geometry/Box";
 import BoxCode from "../../../components/threeJS/geometry/Box.tsx?raw";
 
 export default {
-  title: "threeJS/geometry/Box",
+  title: "threeJS/Geometry/Box",
   component: Box,
   tags: ["autodocs"],
   parameters: {

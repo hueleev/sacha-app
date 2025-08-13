@@ -24,7 +24,7 @@ https://drei.docs.pmnd.rs/shaders/mesh-reflector-material
 `;
 
 export default {
-  title: "threeJS/mesh/Reflector",
+  title: "threeJS/Mesh/Reflector",
   component: Reflector,
   tags: ["autodocs"],
   parameters: {

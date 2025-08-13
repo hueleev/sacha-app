@@ -24,7 +24,7 @@ Glass 효과를 보여주는 컴포넌트입니다.
 `;
 
 export default {
-  title: "threeJS/mesh/Glass",
+  title: "threeJS/Mesh/Glass",
   component: Glass,
   tags: ["autodocs"],
   parameters: {
