@@ -2,7 +2,7 @@ import ThreeBox from "../../../components/threeJS/geometry/ThreeBox";
 import ThreeBoxCode from "../../../components/threeJS/geometry/ThreeBox.tsx?raw";
 
 export default {
-  title: "threeJS/geometry/ThreeBox",
+  title: "threeJS/Geometry/ThreeBox",
   component: ThreeBox,
   tags: ["autodocs"],
   parameters: {

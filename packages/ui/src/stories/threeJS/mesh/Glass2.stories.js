@@ -21,7 +21,7 @@ Glass2 효과를 보여주는 컴포넌트입니다.
 `;
 
 export default {
-  title: "threeJS/mesh/Glass2",
+  title: "threeJS/Mesh/Glass2",
   component: Glass2,
   tags: ["autodocs"],
   parameters: {

@@ -32,7 +32,7 @@ const description = `
 `;
 
 export default {
-  title: "threeJS/mesh/Shader",
+  title: "threeJS/Mesh/Shader",
   component: Shader,
   tags: ["autodocs"],
   parameters: {

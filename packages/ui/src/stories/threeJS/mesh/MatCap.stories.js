@@ -27,7 +27,7 @@ https://github.com/emmelleppi/matcaps
 `;
 
 export default {
-  title: "threeJS/mesh/MatCap",
+  title: "threeJS/Mesh/MatCap",
   component: MatCap,
   tags: ["autodocs"],
   parameters: {

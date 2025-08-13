@@ -24,7 +24,7 @@ https://3dtextures.me/2020/07/15/glass-window-002/
 
 
 export default {
-    title: "threeJS/mesh/Texture",
+    title: "threeJS/Mesh/Texture",
     component: Texture,
     tags: ["autodocs"],
     parameters: {

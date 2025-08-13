@@ -21,7 +21,7 @@ const description = `
 `;
 
 export default {
-  title: "threeJS/mesh/Wabble",
+  title: "threeJS/Mesh/Wabble",
   component: Wabble,
   tags: ["autodocs"],
   parameters: {
