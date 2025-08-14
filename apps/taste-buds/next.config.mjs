@@ -2,7 +2,7 @@
 const nextConfig = {
     transpilePackages: ["@workspace/ui"],
     images: {
-        domains: ["k.kakaocdn.net"],
+        domains: ["k.kakaocdn.net", "image.tmdb.org"],
     },
     async redirects() {
         return [
