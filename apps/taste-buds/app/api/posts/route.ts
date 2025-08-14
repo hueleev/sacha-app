@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/authOptions";
 import { db } from "@/lib/db";
-import { movieContents, posts, commonCodes } from "@/lib/schema";
+import { movieContents, posts, commonCodes, bookContents } from "@/lib/schema";
 import { eq } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
 
@@ -74,11 +74,33 @@ export async function POST(request: Request) {
         );
       case "book":
         contentTypeCode = "book";
-        // TODO: Implement book content insertion
-        return NextResponse.json(
-          { message: "Book taste type not yet implemented" },
-          { status: 501 }
-        );
+        let bookSource = searchType === "search" ? "api" : "manual";
+        let bookSourceId =
+          searchType === "search" ? apiSourceId : `taste-${uuidv4()}`;
+        let bookPublicationYear = year ? parseInt(year, 10) : null;
+
+        // Check if book content already exists
+        let existingBook = await db.query.bookContents.findFirst({
+          where: eq(bookContents.sourceId, bookSourceId),
+        });
+
+        if (existingBook) {
+          contentId = existingBook.id;
+        } else {
+          const [newBook] = await db
+            .insert(bookContents)
+            .values({
+              title,
+              author: artistDirectorAuthor,
+              publicationYear: bookPublicationYear,
+              image: imageUrl,
+              source: bookSource,
+              sourceId: bookSourceId,
+            })
+            .returning();
+          contentId = newBook.id;
+        }
+        break;
       case "photo":
         contentTypeCode = "photo";
         // TODO: Implement photo content insertion
