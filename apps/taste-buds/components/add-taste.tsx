@@ -9,6 +9,7 @@ import AddMusicTaste from "./taste-form/add-music-taste";
 import AddPhotoTaste from "./taste-form/add-photo-taste";
 
 interface AddTasteProps {
+  onAdd: () => void;
   onCancel: () => void;
 }
 

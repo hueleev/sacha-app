@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 
 export async function DELETE(
   request: Request,
-  context: { params: { postId: string } }
+  { params }: { params: Promise<{ postId: string }> }
 ) {
   const session = await getServerSession(authOptions);
 
@@ -16,10 +16,13 @@ export async function DELETE(
   }
 
   const userId = session.user.id;
-  const postId = context.params.postId;
+  const postId = (await params).postId;
 
   if (!postId) {
-    return NextResponse.json({ message: "Post ID is required" }, { status: 400 });
+    return NextResponse.json(
+      { message: "Post ID is required" },
+      { status: 400 }
+    );
   }
 
   try {
@@ -38,7 +41,10 @@ export async function DELETE(
 
     await db.delete(posts).where(eq(posts.id, postId));
 
-    return NextResponse.json({ message: "Post deleted successfully" }, { status: 200 });
+    return NextResponse.json(
+      { message: "Post deleted successfully" },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Failed to delete post:", error);
     return NextResponse.json(

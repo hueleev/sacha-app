@@ -1,6 +1,10 @@
 {
   "extends": "@workspace/typescript-config/nextjs.json",
   "compilerOptions": {
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],

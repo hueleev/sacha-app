@@ -62,7 +62,9 @@ export async function POST(request: Request) {
               sourceId: movieSourceId,
             })
             .returning();
-          contentId = newMovie.id;
+          if (newMovie) {
+            contentId = newMovie.id;
+          }
         }
         break;
       case "music":
@@ -98,7 +100,7 @@ export async function POST(request: Request) {
               sourceId: bookSourceId,
             })
             .returning();
-          contentId = newBook.id;
+          if (newBook) contentId = newBook.id;
         }
         break;
       case "photo":

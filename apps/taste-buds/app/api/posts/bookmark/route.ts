@@ -68,7 +68,7 @@ export async function POST(request: Request) {
     const existingBookmark = await db.query.bookmarks.findFirst({
       where: and(
         eq(bookmarks.userId, userId),
-        eq(bookmarks.contentTypeId, contentTypeId),
+        eq(bookmarks.contentTypeId, contentTypeId ?? ""),
         contentTypeCode === "movie"
           ? eq(bookmarks.movieContentId, contentId)
           : undefined,

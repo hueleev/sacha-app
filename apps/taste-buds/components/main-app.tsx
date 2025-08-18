@@ -104,7 +104,7 @@ export default function MainApp({ user, profile, onLogout }: MainAppProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const observer = useRef<IntersectionObserver>();
+  const observer = useRef<IntersectionObserver | null>(null);
 
   const loadPosts = useCallback(
     async (tab: string, pageNum: number) => {
@@ -128,7 +128,7 @@ export default function MainApp({ user, profile, onLogout }: MainAppProps) {
 
         setPosts((prev) => ({
           ...prev,
-          [tab]: pageNum === 1 ? data : [...prev[tab], ...data],
+          [tab]: pageNum === 1 ? data : [...(prev[tab] ?? []), ...data],
         }));
         setPage((prev) => ({ ...prev, [tab]: pageNum + 1 }));
         setHasMore((prev) => ({ ...prev, [tab]: data.length === 10 }));
@@ -149,12 +149,12 @@ export default function MainApp({ user, profile, onLogout }: MainAppProps) {
   }, [activeTab, filterType, ratingFilter, hideDuplicates]);
 
   const lastPostElementRef = useCallback(
-    (node) => {
+    (node: any) => {
       if (isLoading) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore[activeTab]) {
-          loadPosts(activeTab, page[activeTab]);
+        if (entries[0]?.isIntersecting && hasMore[activeTab]) {
+          loadPosts(activeTab, page[activeTab] ?? 1);
         }
       });
       if (node) observer.current.observe(node);
@@ -192,7 +192,7 @@ export default function MainApp({ user, profile, onLogout }: MainAppProps) {
   ) => {
     setPosts((prevPosts) => ({
       ...prevPosts,
-      [activeTab]: prevPosts[activeTab].map((taste) =>
+      [activeTab]: (prevPosts[activeTab] ?? []).map((taste) =>
         taste.id === postId ? updateFn(taste) : taste
       ),
     }));
@@ -247,7 +247,7 @@ export default function MainApp({ user, profile, onLogout }: MainAppProps) {
       setPosts((prevPosts) => {
         const newPosts = { ...prevPosts };
         for (const tab in newPosts) {
-          newPosts[tab] = newPosts[tab].map((p) =>
+          newPosts[tab] = (newPosts[tab] ?? []).map((p) =>
             p.userId === targetUserId
               ? { ...p, isFollowing: !p.isFollowing }
               : p
@@ -273,7 +273,7 @@ export default function MainApp({ user, profile, onLogout }: MainAppProps) {
       alert("게시물이 성공적으로 삭제되었습니다.");
       setPosts((prevPosts) => ({
         ...prevPosts,
-        [activeTab]: prevPosts[activeTab].filter(
+        [activeTab]: (prevPosts[activeTab] ?? []).filter(
           (taste) => taste.id !== postId
         ),
       }));
@@ -461,7 +461,7 @@ export default function MainApp({ user, profile, onLogout }: MainAppProps) {
   );
 
   const renderTabContent = (tabName: keyof typeof posts) => {
-    const currentPosts = posts[tabName];
+    const currentPosts = posts[tabName] ?? [];
     return (
       <div
         className={`${viewMode === "grid" ? "grid grid-cols-2" : "flex flex-col"} border-l border-black`}
@@ -692,16 +692,20 @@ export default function MainApp({ user, profile, onLogout }: MainAppProps) {
         </div>
       )}
 
-      {!isLoading && !hasMore[activeTab] && posts[activeTab].length === 0 && (
-        <div className="text-center p-10 text-gray-500">
-          표시할 취향이 없습니다.
-        </div>
-      )}
-      {!isLoading && !hasMore[activeTab] && posts[activeTab].length > 0 && (
-        <div className="text-center p-4 text-gray-500 text-sm">
-          더 이상 불러올 취향이 없습니다.
-        </div>
-      )}
+      {!isLoading &&
+        !hasMore[activeTab] &&
+        (posts[activeTab]?.length ?? 0) === 0 && (
+          <div className="text-center p-10 text-gray-500">
+            표시할 취향이 없습니다.
+          </div>
+        )}
+      {!isLoading &&
+        !hasMore[activeTab] &&
+        (posts[activeTab]?.length ?? 0) > 0 && (
+          <div className="text-center p-4 text-gray-500 text-sm">
+            더 이상 불러올 취향이 없습니다.
+          </div>
+        )}
       {error && (
         <div className="text-center p-10 text-red-500">Error: {error}</div>
       )}
