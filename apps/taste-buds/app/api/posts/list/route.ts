@@ -14,7 +14,7 @@ import {
   follows,
   commonCodes,
 } from "@/lib/schema";
-import { eq, sql, and, or, desc, inArray, ne } from "drizzle-orm";
+import { eq, sql, and, or, desc, inArray, ne, SQL } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 
 export async function GET(request: Request) {
@@ -26,7 +26,9 @@ export async function GET(request: Request) {
 
   const currentUserId = session.user.id;
   const { searchParams } = new URL(request.url);
-  const tab = searchParams.get("tab") || "Tastopia";
+  const tab = searchParams.get("tab") || "tastopia";
+  const rating = searchParams.get("rating") || "all";
+  const type = searchParams.get("type") || "all";
 
   try {
     const likesCountSubquery = db
@@ -105,16 +107,18 @@ export async function GET(request: Request) {
       .orderBy(desc(posts.createdAt))
       .$dynamic();
 
+    const whereConditions: (SQL | undefined)[] = [];
+
     switch (tab) {
       case "moimoi":
-        query = query.where(eq(posts.userId, currentUserId));
+        whereConditions.push(eq(posts.userId, currentUserId));
         break;
       case "favfolk":
         const followedUsers = db
           .select({ followingId: follows.followingId })
           .from(follows)
           .where(eq(follows.followerId, currentUserId));
-        query = query.where(
+        whereConditions.push(
           and(
             inArray(posts.userId, followedUsers),
             ne(posts.userId, currentUserId)
@@ -122,11 +126,23 @@ export async function GET(request: Request) {
         );
         break;
       case "zzimzzim":
-        query = query.where(sql`${userBookmarks.id} IS NOT NULL`);
+        whereConditions.push(sql`${userBookmarks.id} IS NOT NULL`);
         break;
       case "tastopia":
       default:
         break;
+    }
+
+    if (rating !== "all") {
+      whereConditions.push(eq(posts.rating, Number(rating)));
+    }
+
+    if (type !== "all") {
+      whereConditions.push(eq(commonCodes.code, type));
+    }
+
+    if (whereConditions.length > 0) {
+      query = query.where(and(...whereConditions));
     }
 
     const allPosts = await query;
