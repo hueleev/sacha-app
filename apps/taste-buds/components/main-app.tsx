@@ -38,6 +38,7 @@ import {
   HelpCircle,
   X,
   Loader2,
+  Trash2,
 } from "lucide-react";
 import AddTaste from "./add-taste";
 
@@ -82,7 +83,7 @@ export default function MainApp({ user, profile, onLogout }: MainAppProps) {
   const [hideDuplicates, setHideDuplicates] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
 
-  const [activeTab, setActiveTab] = useState("tastopia");
+  const [activeTab, setActiveTab] = useState("moimoi");
   const [posts, setPosts] = useState<Record<string, TasteItem[]>>({
     moimoi: [],
     tastopia: [],
@@ -340,12 +341,21 @@ export default function MainApp({ user, profile, onLogout }: MainAppProps) {
               />
             </button>
           </div>
-          <button
-            onClick={() => toggleFollow(taste.userId)}
-            className="text-gray-500 hover:text-black"
-          >
-            {taste.isFollowing ? "팔로잉" : "팔로우"}
-          </button>
+          {taste.userId === user.id ? (
+            <button
+              onClick={() => handleDeletePost(taste.id)}
+              className="text-gray-500 hover:text-red-500"
+            >
+              <Trash2 className="w-3 h-3" />
+            </button>
+          ) : (
+            <button
+              onClick={() => toggleFollow(taste.userId)}
+              className="text-gray-500 hover:text-black"
+            >
+              {taste.isFollowing ? "팔로잉" : "팔로우"}
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -400,12 +410,21 @@ export default function MainApp({ user, profile, onLogout }: MainAppProps) {
                 />
               </button>
             </div>
-            <button
-              onClick={() => toggleFollow(taste.userId)}
-              className="text-gray-500 hover:text-black"
-            >
-              {taste.isFollowing ? "팔로잉" : "팔로우"}
-            </button>
+            {taste.userId === user.id ? (
+              <button
+                onClick={() => handleDeletePost(taste.id)}
+                className="text-gray-500 hover:text-black"
+              >
+                <Trash2 className="w-3 h-3" />
+              </button>
+            ) : (
+              <button
+                onClick={() => toggleFollow(taste.userId)}
+                className="text-gray-500 hover:text-black"
+              >
+                {taste.isFollowing ? "팔로잉" : "팔로우"}
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -647,25 +666,25 @@ export default function MainApp({ user, profile, onLogout }: MainAppProps) {
           <TabsList className="grid w-full grid-cols-4 bg-transparent p-0 h-auto">
             <TabsTrigger
               value="moimoi"
-              className="border-r border-black data-[state=active]:bg-gray-100 data-[state=active]:text-black bg-white text-gray-600 font-medium py-3 px-2 rounded-none transition-all hover:bg-gray-50 text-xs"
+              className="border-r border-black data-[state=active]:bg-black data-[state=active]:text-white bg-white text-gray-600 font-medium py-3 px-2 rounded-none transition-all hover:bg-gray-50 text-xs"
             >
               MoiMoi
             </TabsTrigger>
             <TabsTrigger
               value="tastopia"
-              className="border-r border-black data-[state=active]:bg-gray-100 data-[state=active]:text-black bg-white text-gray-600 font-medium py-3 px-2 rounded-none transition-all hover:bg-gray-50 text-xs"
+              className="border-r border-black data-[state=active]:bg-black data-[state=active]:text-white bg-white text-gray-600 font-medium py-3 px-2 rounded-none transition-all hover:bg-gray-50 text-xs"
             >
               Tastopia
             </TabsTrigger>
             <TabsTrigger
               value="favfolk"
-              className="border-r border-black data-[state=active]:bg-gray-100 data-[state=active]:text-black bg-white text-gray-600 font-medium py-3 px-2 rounded-none transition-all hover:bg-gray-50 text-xs"
+              className="border-r border-black data-[state=active]:bg-black data-[state=active]:text-white bg-white text-gray-600 font-medium py-3 px-2 rounded-none transition-all hover:bg-gray-50 text-xs"
             >
               FavFolk
             </TabsTrigger>
             <TabsTrigger
               value="zzimzzim"
-              className="border-r border-black data-[state=active]:bg-gray-100 data-[state=active]:text-black bg-white text-gray-600 font-medium py-3 px-2 rounded-none transition-all hover:bg-gray-50 text-xs"
+              className="border-r border-black data-[state=active]:bg-black data-[state=active]:text-white bg-white text-gray-600 font-medium py-3 px-2 rounded-none transition-all hover:bg-gray-50 text-xs"
             >
               ZzimZzim
             </TabsTrigger>

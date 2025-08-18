@@ -14,7 +14,8 @@ import {
   follows,
   commonCodes,
 } from "@/lib/schema";
-import { eq, sql, and, or, desc } from "drizzle-orm";
+import { eq, sql, and, or, desc, inArray, ne } from "drizzle-orm";
+import { alias } from "drizzle-orm/pg-core";
 
 export async function GET(request: Request) {
   const session = await getServerSession(authOptions);
@@ -24,30 +25,51 @@ export async function GET(request: Request) {
   }
 
   const currentUserId = session.user.id;
+  const { searchParams } = new URL(request.url);
+  const tab = searchParams.get("tab") || "Tastopia";
 
   try {
-    const allPosts = await db
+    const likesCountSubquery = db
       .select({
-        post: posts,
-        movie: movieContents,
-        book: bookContents,
-        music: musicContents,
-        photo: photoContents,
-        profile: profiles,
-        contentType: commonCodes,
-        isLiked:
-          sql<boolean>`CASE WHEN ${likes.userId} IS NOT NULL THEN TRUE ELSE FALSE END`.as(
-            "isLiked"
+        postId: likes.postId,
+        count: sql<number>`count(${likes.id})`.as("likes_count"),
+      })
+      .from(likes)
+      .groupBy(likes.postId)
+      .as("likes_count_sq");
+
+    const userLikes = alias(likes, "user_likes");
+    const userFollows = alias(follows, "user_follows");
+    const userBookmarks = alias(bookmarks, "user_bookmarks");
+
+    let query = db
+      .select({
+        id: posts.id,
+        comment: posts.comment,
+        rating: posts.rating,
+        createdAt: posts.createdAt,
+        userId: posts.userId,
+        userNickname: profiles.nickname,
+        userProfileImage: profiles.bio,
+        type: commonCodes.code,
+        title:
+          sql<string>`coalesce(${movieContents.title}, ${bookContents.title}, ${musicContents.title}, ${photoContents.title})`.as(
+            "title"
           ),
-        isBookmarked:
-          sql<boolean>`CASE WHEN ${bookmarks.userId} IS NOT NULL THEN TRUE ELSE FALSE END`.as(
-            "isBookmarked"
+        image:
+          sql<string>`coalesce(${movieContents.image}, ${bookContents.image}, ${musicContents.image}, ${photoContents.image})`.as(
+            "image"
           ),
-        isFollowing:
-          sql<boolean>`CASE WHEN ${follows.followerId} IS NOT NULL THEN TRUE ELSE FALSE END`.as(
-            "isisFollowing"
-          ),
-        likesCount: sql<number>`count(${likes.id})`.as("likesCount"),
+        isLiked: sql<boolean>`${userLikes.id} IS NOT NULL`.as("isLiked"),
+        isBookmarked: sql<boolean>`${userBookmarks.id} IS NOT NULL`.as(
+          "isBookmarked"
+        ),
+        isFollowing: sql<boolean>`${userFollows.id} IS NOT NULL`.as(
+          "isFollowing"
+        ),
+        likesCount: sql<number>`coalesce(${likesCountSubquery.count}, 0)`.as(
+          "likesCount"
+        ),
       })
       .from(posts)
       .leftJoin(movieContents, eq(posts.movieContentId, movieContents.id))
@@ -56,124 +78,64 @@ export async function GET(request: Request) {
       .leftJoin(photoContents, eq(posts.photoContentId, photoContents.id))
       .leftJoin(profiles, eq(posts.userId, profiles.userId))
       .leftJoin(commonCodes, eq(posts.contentTypeId, commonCodes.id))
+      .leftJoin(likesCountSubquery, eq(posts.id, likesCountSubquery.postId))
       .leftJoin(
-        likes,
-        and(eq(likes.postId, posts.id), eq(likes.userId, currentUserId))
+        userLikes,
+        and(eq(userLikes.postId, posts.id), eq(userLikes.userId, currentUserId))
       )
       .leftJoin(
-        bookmarks,
+        userFollows,
         and(
-          eq(bookmarks.userId, currentUserId),
+          eq(userFollows.followerId, currentUserId),
+          eq(userFollows.followingId, posts.userId)
+        )
+      )
+      .leftJoin(
+        userBookmarks,
+        and(
+          eq(userBookmarks.userId, currentUserId),
           or(
-            and(
-              eq(bookmarks.musicContentId, posts.musicContentId),
-              eq(commonCodes.code, "music")
-            ),
-            and(
-              eq(bookmarks.movieContentId, posts.movieContentId),
-              eq(commonCodes.code, "movie")
-            ),
-            and(
-              eq(bookmarks.bookContentId, posts.bookContentId),
-              eq(commonCodes.code, "book")
-            ),
-            and(
-              eq(bookmarks.photoContentId, posts.photoContentId),
-              eq(commonCodes.code, "photo")
-            )
+            eq(userBookmarks.musicContentId, posts.musicContentId),
+            eq(userBookmarks.movieContentId, posts.movieContentId),
+            eq(userBookmarks.bookContentId, posts.bookContentId),
+            eq(userBookmarks.photoContentId, posts.photoContentId)
           )
         )
       )
-      .leftJoin(
-        follows,
-        and(
-          eq(follows.followerId, currentUserId),
-          eq(follows.followingId, posts.userId)
-        )
-      )
-      .groupBy(
-        posts.id,
-        movieContents.id,
-        bookContents.id,
-        musicContents.id,
-        photoContents.id,
-        profiles.id,
-        commonCodes.id,
-        likes.userId,
-        bookmarks.userId,
-        follows.followerId
-      )
-      .orderBy(desc(posts.createdAt)); // Order by newest first
+      .orderBy(desc(posts.createdAt))
+      .$dynamic();
 
-    const formattedPosts = allPosts.map((row) => {
-      const {
-        post,
-        movie,
-        book,
-        music,
-        photo,
-        profile,
-        contentType,
-        isLiked,
-        isBookmarked,
-        isFollowing,
-        likesCount,
-      } = row;
+    switch (tab) {
+      case "moimoi":
+        query = query.where(eq(posts.userId, currentUserId));
+        break;
+      case "favfolk":
+        const followedUsers = db
+          .select({ followingId: follows.followingId })
+          .from(follows)
+          .where(eq(follows.followerId, currentUserId));
+        query = query.where(
+          and(
+            inArray(posts.userId, followedUsers),
+            ne(posts.userId, currentUserId)
+          )
+        );
+        break;
+      case "zzimzzim":
+        query = query.where(sql`${userBookmarks.id} IS NOT NULL`);
+        break;
+      case "tastopia":
+      default:
+        break;
+    }
 
-      let content: any = null;
-      let type: string = "";
-      let imageUrl: string | null = null;
-      let mainAuthor: string | null = null;
-      let releaseYear: number | null = null;
+    const allPosts = await query;
 
-      if (contentType) {
-        type = contentType.code;
-        switch (contentType.code) {
-          case "movie":
-            content = movie;
-            imageUrl = movie?.image || null;
-            mainAuthor = movie?.director || null;
-            releaseYear = movie?.releaseYear || null;
-            break;
-          case "book":
-            content = book;
-            imageUrl = book?.image || null;
-            mainAuthor = book?.author || null;
-            releaseYear = book?.publicationYear || null;
-            break;
-          case "music":
-            content = music;
-            imageUrl = music?.image || null;
-            mainAuthor = music?.artist || null;
-            releaseYear = music?.releaseYear || null;
-            break;
-          case "photo":
-            content = photo;
-            imageUrl = photo?.image || null;
-            mainAuthor = profile?.nickname || null; // Photo author is the user
-            break;
-        }
-      }
-
-      return {
-        id: post.id,
-        comment: post.comment,
-        rating: post.rating,
-        createdAt: post.createdAt?.toISOString(),
-        userId: post.userId,
-        userNickname: profile?.nickname || "Unknown",
-        userProfileImage: profile?.bio || null, // Assuming bio might store profile image URL, or add a new column
-        type: type,
-        title: content?.title || "Untitled",
-        image: imageUrl,
-        author: mainAuthor,
-        releaseYear: releaseYear,
-        isLiked: isLiked,
-        isBookmarked: isBookmarked,
-        isFollowing: isFollowing,
-        likesCount: likesCount,
-      };
-    });
+    const formattedPosts = allPosts.map((p) => ({
+      ...p,
+      author: null, // Not requested
+      releaseYear: null, // Not requested
+    }));
 
     return NextResponse.json(formattedPosts);
   } catch (error) {
