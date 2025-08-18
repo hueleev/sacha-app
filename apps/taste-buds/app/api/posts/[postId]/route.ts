@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { postId: string } }
+  context: { params: { postId: string } }
 ) {
   const session = await getServerSession(authOptions);
 
@@ -16,7 +16,7 @@ export async function DELETE(
   }
 
   const userId = session.user.id;
-  const postId = params.postId;
+  const postId = context.params.postId;
 
   if (!postId) {
     return NextResponse.json({ message: "Post ID is required" }, { status: 400 });
