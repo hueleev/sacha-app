@@ -1,21 +1,23 @@
-"use client";
+'use client';
 
-import type React from "react";
-import { useState } from "react";
-import Image from "next/image";
-import { Button } from "@workspace/ui/components/shadcn/button";
-import { Input } from "@workspace/ui/components/shadcn/input";
-import { Textarea } from "@workspace/ui/components/shadcn/textarea";
-import { Book, Star } from "lucide-react";
+import type React from 'react';
+import { useState } from 'react';
+import Image from 'next/image';
+import { Button } from '@workspace/ui/components/shadcn/button';
+import { Input } from '@workspace/ui/components/shadcn/input';
+import { Textarea } from '@workspace/ui/components/shadcn/textarea';
+import { Book, Star } from 'lucide-react';
+// 토스트 메시지 출력을 위한 로컬 훅 임포트
+import { useToast } from '@/hooks/use-toast';
 
-// Type for our standardized search result
+// 책 검색 결과를 나타내는 인터페이스 정의
 interface BookSearchResult {
   id: string;
   title: string;
   author: string;
   publication_year?: number;
   image: string;
-  source: "api";
+  source: 'api';
   sourceId: string;
 }
 
@@ -28,61 +30,70 @@ export default function AddBookTaste({
   onCancel,
   onSuccess,
 }: AddBookTasteProps) {
-  const [inputMode, setInputMode] = useState<"search" | "manual" | null>(null);
+  // 토스트 훅 초기화
+  const { toast } = useToast();
+  const [inputMode, setInputMode] = useState<'search' | 'manual' | null>(null);
 
-  // Form fields
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  // 입력 폼 상태값 정의
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [rating, setRating] = useState(0);
-  const [image, setImage] = useState(""); // Can be URL or base64
-  const [author, setAuthor] = useState("");
+  const [image, setImage] = useState(''); // 이미지 URL 혹은 base64 데이터
+  const [author, setAuthor] = useState('');
   const [publicationYear, setPublicationYear] = useState<number | undefined>(
-    undefined
+    undefined,
   );
 
-  // Book search specific state
-  const [searchQuery, setSearchQuery] = useState("");
+  // 책 검색을 위한 상태값 정의
+  const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<BookSearchResult[]>([]);
   const [selectedBook, setSelectedBook] = useState<BookSearchResult | null>(
-    null
+    null,
   );
   const [isSearching, setIsSearching] = useState(false);
 
+  // 이미지 업로드 핸들러 (수동 입력 시 base64 인코딩)
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result as string); // base64
+        setImage(reader.result as string); // base64 문자열 저장
       };
       reader.readAsDataURL(e.target.files[0]);
     }
   };
 
+  // Naver API를 통한 책 검색 핸들러
   const handleBookSearch = async () => {
     if (!searchQuery.trim()) return;
     setIsSearching(true);
     setSearchResults([]);
     try {
       const response = await fetch(
-        `/api/book/search?query=${encodeURIComponent(searchQuery)}`
+        `/api/book/search?query=${encodeURIComponent(searchQuery)}`,
       );
       if (!response.ok) {
-        throw new Error("책 검색 API 호출에 실패했습니다.");
+        throw new Error('책 검색 API 호출에 실패했습니다.');
       }
       const data: BookSearchResult[] = await response.json();
       setSearchResults(data);
     } catch (error) {
-      console.error("Failed to fetch books:", error);
-      alert(
-        error instanceof Error
-          ? error.message
-          : "책 검색 중 오류가 발생했습니다."
-      );
+      console.error('Failed to fetch books:', error);
+      // 책 검색 에러 발생 시 토스트 팝업 (오류 타이틀 포함)
+      toast({
+        title: '오류',
+        description:
+          error instanceof Error
+            ? error.message
+            : '책 검색 중 오류가 발생했습니다.',
+        variant: 'destructive',
+      });
     } finally {
       setIsSearching(false);
     }
   };
 
+  // 검색 결과 목록에서 책을 선택했을 때 처리 핸들러
   const handleSelectBook = (book: BookSearchResult) => {
     setSelectedBook(book);
     setTitle(book.title);
@@ -90,58 +101,78 @@ export default function AddBookTaste({
     setPublicationYear(book.publication_year);
     setImage(book.image);
     setSearchResults([]);
-    setSearchQuery("");
+    setSearchQuery('');
   };
 
+  // 취향 등록 폼 전송 핸들러
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validation
+    // 필수 입력값 검증 실패 시 토스트 팝업 (실패 타이틀 포함)
     if (!title || !description) {
-      alert("제목과 후기는 필수 항목입니다.");
+      toast({
+        title: '실패',
+        description: '제목과 후기는 필수 항목입니다.',
+        variant: 'destructive',
+      });
       return;
     }
     if (rating === 0) {
-      alert("별점을 선택해주세요.");
+      toast({
+        title: '실패',
+        description: '별점을 선택해주세요.',
+        variant: 'destructive',
+      });
       return;
     }
 
     let postData: any = {
-      tasteType: "book",
+      tasteType: 'book',
       title: title,
       comment: description,
       rating: rating,
       imageUrl: image,
       searchType: inputMode,
-      artistDirectorAuthor: author, // author for book
+      artistDirectorAuthor: author, // 저자 정보 매핑
       year: publicationYear ? publicationYear.toString() : null,
     };
 
-    if (inputMode === "search" && selectedBook) {
-      postData.sourceId = selectedBook.id; // Pass sourceId from selected book
+    if (inputMode === 'search' && selectedBook) {
+      postData.sourceId = selectedBook.id;
     }
 
     try {
-      const response = await fetch("/api/posts", {
-        method: "POST",
+      const response = await fetch('/api/posts', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(postData),
       });
 
       if (response.ok) {
-        alert("취향이 성공적으로 등록되었습니다!");
+        // 성공한 경우 타이틀(title) 없이 내용(description)만 보여줍니다.
+        toast({
+          description: '취향이 성공적으로 등록되었습니다!',
+        });
         onSuccess();
       } else {
         const errorData = await response.json();
-        alert(
-          `취향 등록에 실패했습니다: ${errorData.message || response.statusText}`
-        );
+        // 등록 실패 시 토스트 팝업 (실패 타이틀 포함)
+        toast({
+          title: '실패',
+          description: `취향 등록에 실패했습니다: ${errorData.message || response.statusText}`,
+          variant: 'destructive',
+        });
       }
     } catch (error) {
-      console.error("Failed to submit taste:", error);
-      alert("취향 등록 중 오류가 발생했습니다.");
+      console.error('Failed to submit taste:', error);
+      // 알 수 없는 오류 발생 시 토스트 팝업 (오류 타이틀 포함)
+      toast({
+        title: '오류',
+        description: '취향 등록 중 오류가 발생했습니다.',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -152,31 +183,33 @@ export default function AddBookTaste({
         <div className="grid grid-cols-2 gap-px border border-black">
           <Button
             type="button"
-            onClick={() => setInputMode("search")}
-            className={`rounded-none h-12 ${inputMode === "search" ? "bg-gray-200 font-bold" : "bg-white hover:bg-gray-50"} text-black border-r border-black`}
+            onClick={() => setInputMode('search')}
+            className={`rounded-none h-12 ${inputMode === 'search' ? 'bg-gray-200 font-bold' : 'bg-white hover:bg-gray-50'} text-black border-r border-black`}
           >
             검색하기
           </Button>
           <Button
             type="button"
-            onClick={() => setInputMode("manual")}
-            className={`rounded-none h-12 ${inputMode === "manual" ? "bg-gray-200 font-bold" : "bg-white hover:bg-gray-50"} text-black`}
+            onClick={() => setInputMode('manual')}
+            className={`rounded-none h-12 ${inputMode === 'manual' ? 'bg-gray-200 font-bold' : 'bg-white hover:bg-gray-50'} text-black`}
           >
             직접입력
           </Button>
         </div>
       </div>
 
-      {inputMode === "search" && (
+      {inputMode === 'search' && (
         <div className="space-y-4">
           {!selectedBook && (
             <div>
-              <label className="block text-sm font-medium mb-2">책 검색</label>
+              <label className="block text-sm font-medium mb-2 mt-2">
+                책 검색
+              </label>
               <div className="flex gap-2">
                 <Input
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleBookSearch()}
+                  onKeyDown={(e) => e.key === 'Enter' && handleBookSearch()}
                   placeholder="책 제목, 작가 등으로 검색"
                   className="border border-black rounded-none bg-white"
                   disabled={isSearching}
@@ -187,7 +220,7 @@ export default function AddBookTaste({
                   className="bg-black text-white hover:bg-gray-800 rounded-none w-20"
                   disabled={isSearching}
                 >
-                  {isSearching ? "검색중..." : "검색"}
+                  {isSearching ? '검색중...' : '검색'}
                 </Button>
               </div>
             </div>
@@ -259,11 +292,11 @@ export default function AddBookTaste({
                 <div className="flex-grow space-y-1">
                   <h3 className="font-bold text-lg">{selectedBook.title}</h3>
                   <p>
-                    <span className="font-semibold">작가:</span>{" "}
+                    <span className="font-semibold">작가:</span>{' '}
                     {selectedBook.author}
                   </p>
                   <p>
-                    <span className="font-semibold">출판년도:</span>{" "}
+                    <span className="font-semibold">출판년도:</span>{' '}
                     {selectedBook.publication_year}
                   </p>
                 </div>
@@ -280,10 +313,10 @@ export default function AddBookTaste({
         </div>
       )}
 
-      {inputMode === "manual" && (
+      {inputMode === 'manual' && (
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-2">제목</label>
+            <label className="block text-sm font-medium mb-2 mt-2">제목</label>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -305,10 +338,10 @@ export default function AddBookTaste({
             <label className="block text-sm font-medium mb-2">연도</label>
             <Input
               type="number"
-              value={publicationYear || ""}
+              value={publicationYear || ''}
               onChange={(e) =>
                 setPublicationYear(
-                  e.target.value ? parseInt(e.target.value) : undefined
+                  e.target.value ? parseInt(e.target.value) : undefined,
                 )
               }
               placeholder="출판 연도"
@@ -343,7 +376,10 @@ export default function AddBookTaste({
   );
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-6"
+    >
       <div className="space-y-6">
         <div>
           <h2 className="block text-sm font-medium mb-3">
@@ -371,7 +407,7 @@ export default function AddBookTaste({
                         className="p-1 transition-transform hover:scale-110"
                       >
                         <Star
-                          className={`w-8 h-8 ${star <= rating ? "fill-yellow-400 text-yellow-500" : "text-gray-300"}`}
+                          className={`w-8 h-8 ${star <= rating ? 'fill-yellow-400 text-yellow-500' : 'text-gray-300'}`}
                         />
                       </button>
                     ))}
@@ -391,7 +427,7 @@ export default function AddBookTaste({
               </div>
             </div>
             <hr />
-            <div className="grid grid-cols-2 gap-px border border-black h-12">
+            <div className="grid grid-cols-2 border border-black">
               <Button
                 type="button"
                 onClick={onCancel}

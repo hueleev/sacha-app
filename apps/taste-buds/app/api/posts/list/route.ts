@@ -13,6 +13,7 @@ import {
   bookmarks,
   follows,
   commonCodes,
+  user,
 } from "@/lib/schema";
 import { eq, sql, and, or, desc, inArray, ne, SQL } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
@@ -52,7 +53,7 @@ export async function GET(request: Request) {
         createdAt: posts.createdAt,
         userId: posts.userId,
         userNickname: profiles.nickname,
-        userProfileImage: profiles.bio,
+        userProfileImage: user.image,
         type: commonCodes.code,
         title:
           sql<string>`coalesce(${movieContents.title}, ${bookContents.title}, ${musicContents.title}, ${photoContents.title})`.as(
@@ -61,6 +62,14 @@ export async function GET(request: Request) {
         image:
           sql<string>`coalesce(${movieContents.image}, ${bookContents.image}, ${musicContents.image}, ${photoContents.image})`.as(
             "image"
+          ),
+        author:
+          sql<string>`coalesce(${movieContents.director}, ${bookContents.author}, ${musicContents.artist})`.as(
+            "author"
+          ),
+        releaseYear:
+          sql<number>`coalesce(${movieContents.releaseYear}, ${bookContents.publicationYear}, ${musicContents.releaseYear})`.as(
+            "releaseYear"
           ),
         isLiked: sql<boolean>`${userLikes.id} IS NOT NULL`.as("isLiked"),
         isBookmarked: sql<boolean>`${userBookmarks.id} IS NOT NULL`.as(
@@ -79,6 +88,7 @@ export async function GET(request: Request) {
       .leftJoin(musicContents, eq(posts.musicContentId, musicContents.id))
       .leftJoin(photoContents, eq(posts.photoContentId, photoContents.id))
       .leftJoin(profiles, eq(posts.userId, profiles.userId))
+      .leftJoin(user, eq(posts.userId, user.id))
       .leftJoin(commonCodes, eq(posts.contentTypeId, commonCodes.id))
       .leftJoin(likesCountSubquery, eq(posts.id, likesCountSubquery.postId))
       .leftJoin(
@@ -147,13 +157,7 @@ export async function GET(request: Request) {
 
     const allPosts = await query;
 
-    const formattedPosts = allPosts.map((p) => ({
-      ...p,
-      author: null, // Not requested
-      releaseYear: null, // Not requested
-    }));
-
-    return NextResponse.json(formattedPosts);
+    return NextResponse.json(allPosts);
   } catch (error) {
     console.error("Failed to fetch posts:", error);
     return NextResponse.json(
