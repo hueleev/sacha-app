@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import './globals.css'
+import Providers from '@/components/providers'
 
 export const metadata: Metadata = {
   title: 'taste-buds',
@@ -31,7 +32,9 @@ html {
           <link rel="icon" href="/icon.png" />
           <link rel="apple-touch-icon" href="/icon.png" />
       </head>
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   )
 }
