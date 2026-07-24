@@ -26,7 +26,7 @@ https://sbcode.net/threejs/meshtoonmaterial/
 `;
 
 export default {
-  title: "threeJS/mesh/Toon",
+  title: "threeJS/Mesh/Toon",
   component: Toon,
   tags: ["autodocs"],
   parameters: {

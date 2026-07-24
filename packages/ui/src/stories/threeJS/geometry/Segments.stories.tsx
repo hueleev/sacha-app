@@ -2,7 +2,7 @@ import Segments from "../../../components/threeJS/geometry/Segments";
 import SegmentsCode from "../../../components/threeJS/geometry/Segments.tsx?raw";
 
 export default {
-  title: "threeJS/geometry/Segments",
+  title: "threeJS/Geometry/Segments",
   component: Segments,
   tags: ["autodocs"],
   parameters: {

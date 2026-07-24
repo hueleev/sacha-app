@@ -16,7 +16,7 @@ const description = `
 - \`useRefractionControls\`: Leva 컨트롤 설정
 `;
 export default {
-  title: "threeJS/mesh/Refraction",
+  title: "threeJS/Mesh/Refraction",
   component: Refraction,
   tags: ["autodocs"],
   parameters: {
