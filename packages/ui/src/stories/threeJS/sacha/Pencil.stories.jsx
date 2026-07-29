@@ -1,5 +1,5 @@
-import Pencil from '../../../components/threeJS/sacha/Pencil';
-import PencilCode from '../../../components/threeJS/sacha/Pencil?raw';
+import Pencil from '@workspace/ui/components/threeJS/sacha/Pencil';
+import PencilCode from '@workspace/ui/components/threeJS/sacha/Pencil?raw';
 
 export default {
     title: 'threeJS/Sacha/Pencil',

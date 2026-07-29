@@ -1,5 +1,5 @@
-import AccumulativeShadows from '../../../../components/threeJS/shadow/drei/AccumulativeShadows.jsx';
-import AccumulativeShadowsCode from '../../../../components/threeJS/shadow/drei/AccumulativeShadows.jsx?raw';
+import AccumulativeShadows from '@workspace/ui/components/threeJS/shadow/drei/AccumulativeShadows.jsx';
+import AccumulativeShadowsCode from '@workspace/ui/components/threeJS/shadow/drei/AccumulativeShadows.jsx?raw';
 
 const description = `
 - 정적인 그림자 (동적도 되지만 정적으로 주로 사용)

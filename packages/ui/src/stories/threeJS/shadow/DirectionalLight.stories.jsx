@@ -1,5 +1,5 @@
-import DirectionalLight from '../../../components/threeJS/shadow/DirectionalLight.jsx';
-import DirectionalLightCode from '../../../components/threeJS/shadow/DirectionalLight.jsx?raw';
+import DirectionalLight from '@workspace/ui/components/threeJS/shadow/DirectionalLight.jsx';
+import DirectionalLightCode from '@workspace/ui/components/threeJS/shadow/DirectionalLight.jsx?raw';
 
 const description = `
 Three.js의 Shadow 컴포넌트입니다.
