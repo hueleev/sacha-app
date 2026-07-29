@@ -24,6 +24,11 @@ const config: StorybookConfig = {
   },
   viteFinal: (config) => {
     config.base = "/storybook/";
+    config.resolve ??= {};
+    config.resolve.alias = {
+      ...(config.resolve.alias ?? {}),
+      "@workspace/ui": join(__dirname, "../src"),
+    };
     return config;
   },
 };
